@@ -3,13 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amal Raj Babu Raj | Software Engineer II</title>
+    <title>Amal Raj Babu Raj | Software Engineer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .blue-gradient { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
         .text-gradient { background: linear-gradient(to right, #1e40af, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         html { scroll-behavior: smooth; }
+
+        /* Phase 1.7 — scroll offset for fixed nav */
+        #experience { scroll-margin-top: 65px; }
+
+        /* Phase 1.1 — tab button styles */
+        .tab-btn {
+            display: flex; align-items: center; gap: 8px;
+            padding: 14px 18px; font-size: 0.85rem; font-weight: 600;
+            white-space: nowrap; cursor: pointer; background: none;
+            border: none; border-bottom: 2px solid transparent;
+            color: #64748b; transition: color .2s, border-color .2s;
+        }
+        .tab-btn:hover { color: #2563eb; }
+        .tab-btn.active { border-bottom-color: #2563eb; color: #1d4ed8; }
+
+        /* Phase 1.2 — count badge */
+        .count-badge {
+            font-size: 0.68rem; padding: 1px 7px; font-weight: 700;
+            background: #eff6ff; color: #2563eb; border-radius: 9999px;
+        }
+        .tab-btn.active .count-badge { background: #dbeafe; }
+
+        /* Phase 1.3 — tech tag chips */
+        .tech-tag {
+            font-size: 0.68rem; padding: 2px 8px; font-weight: 500;
+            background: #eff6ff; color: #1d4ed8; border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* Phase 1.4 — card hover */
+        .contribution-card { transition: box-shadow .2s ease, border-color .2s ease; }
+        .contribution-card:hover { box-shadow: 0 4px 24px rgba(37,99,235,.09); border-color: #bfdbfe; }
+
+        /* Phase 1.5 — go-to-top button */
+        #go-to-top {
+            opacity: 0; transform: translateY(12px);
+            pointer-events: none; transition: opacity .3s ease, transform .3s ease;
+        }
+        #go-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+        /* Phase 1.6 — hide tab scrollbar on all browsers */
+        .tabs-scrollable { overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+        .tabs-scrollable::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="bg-white text-slate-800 font-sans">
@@ -30,7 +73,7 @@
         <div class="max-w-4xl mx-auto text-center">
             <h1 class="text-5xl md:text-7xl font-black text-slate-900 mb-6">Amal Raj <span class="text-gradient">Babu Raj</span></h1>
             <p class="text-xl md:text-2xl text-slate-500 leading-relaxed mb-10">
-                Specialist in <span class="text-blue-700 font-semibold">Python, Elixir, and Erlang</span> building scalable backend architectures and high-performance distributed systems.
+                Backend-focused Software Engineer specialising in <span class="text-blue-700 font-semibold">Python, Django, Elixir, and Erlang</span>. I architect distributed systems, design data-intensive APIs, and build AI agents that actually ship.
             </p>
             <div class="flex flex-wrap justify-center gap-4">
                 <a href="mailto:amalrajbrr@gmail.com" class="blue-gradient text-white px-10 py-4 rounded-lg font-bold shadow-xl shadow-blue-200 hover:scale-105 transition-transform">
@@ -97,6 +140,69 @@
         </div>
     </section>
 
+    <!-- ===================== EXPERIENCE SECTION ===================== -->
+    <!-- Phase 2.1 — section + header -->
+    <section id="experience">
+        <div class="bg-white py-16 px-6 border-t border-slate-100">
+            <div class="max-w-6xl mx-auto">
+                <p class="text-sm font-bold uppercase tracking-[0.2em] text-blue-600 mb-3">Work Contributions</p>
+                <h2 class="text-4xl font-extrabold text-slate-900 mb-4">6 Years of Engineering</h2>
+                <p class="text-slate-500 text-lg">Software Engineer &nbsp;·&nbsp; Python &nbsp;·&nbsp; Elixir &nbsp;·&nbsp; Erlang &nbsp;·&nbsp; Django &nbsp;·&nbsp; PydanticAI &nbsp;·&nbsp; AWS &nbsp;·&nbsp; React &nbsp;·&nbsp; TypeScript</p>
+            </div>
+        </div>
+
+        <!-- Phase 2.2 — sticky tab bar -->
+        <div class="sticky top-[65px] z-40 bg-white border-b border-slate-200 shadow-sm">
+            <div class="max-w-6xl mx-auto">
+                <div class="tabs-scrollable flex px-6">
+                    <button class="tab-btn active" data-tab="backend" onclick="switchTab('backend')">
+                        <i class="fas fa-server" style="font-size:12px;"></i>
+                        <span>Backend</span>
+                        <span class="count-badge">15</span>
+                    </button>
+                    <button class="tab-btn" data-tab="frontend" onclick="switchTab('frontend')">
+                        <i class="fas fa-desktop" style="font-size:12px;"></i>
+                        <span>Full-Stack</span>
+                        <span class="count-badge">5</span>
+                    </button>
+                    <button class="tab-btn" data-tab="aiml" onclick="switchTab('aiml')">
+                        <i class="fas fa-robot" style="font-size:12px;"></i>
+                        <span>AI & ML</span>
+                        <span class="count-badge">3</span>
+                    </button>
+                    <button class="tab-btn" data-tab="devops" onclick="switchTab('devops')">
+                        <i class="fas fa-cloud" style="font-size:12px;"></i>
+                        <span>DevOps</span>
+                        <span class="count-badge">3</span>
+                    </button>
+                    <button class="tab-btn" data-tab="data" onclick="switchTab('data')">
+                        <i class="fas fa-database" style="font-size:12px;"></i>
+                        <span>Data Eng</span>
+                        <span class="count-badge">1</span>
+                    </button>
+                    <button class="tab-btn" data-tab="certs" onclick="switchTab('certs')">
+                        <i class="fas fa-award" style="font-size:12px;"></i>
+                        <span>Certifications</span>
+                        <span class="count-badge">2</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 2.3 — tab panels -->
+        <div class="bg-slate-50 py-10 px-6 min-h-96">
+            <div class="max-w-6xl mx-auto">
+                <div id="panel-backend" class="tab-panel"></div>
+                <div id="panel-frontend" class="tab-panel hidden"></div>
+                <div id="panel-aiml" class="tab-panel hidden"></div>
+                <div id="panel-devops" class="tab-panel hidden"></div>
+                <div id="panel-data" class="tab-panel hidden"></div>
+                <div id="panel-certs" class="tab-panel hidden"></div>
+            </div>
+        </div>
+    </section>
+    <!-- ============================================================== -->
+
     <section id="awards" class="py-24 px-6 bg-blue-900 text-white">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-3xl font-bold mb-16 text-center">Academic & Professional Excellence</h2>
@@ -136,6 +242,267 @@
     <footer class="py-12 border-t border-slate-100 text-center text-slate-400 text-xs uppercase tracking-widest">
         &copy; 2026 Amal Raj Babu Raj | Built for High Performance
     </footer>
+
+    <!-- Phase 2.4 — go-to-top button -->
+    <button id="go-to-top"
+        class="fixed bottom-8 right-8 z-50 w-12 h-12 blue-gradient text-white rounded-full shadow-xl shadow-blue-300 flex items-center justify-center hover:scale-110 transition-transform"
+        onclick="window.scrollTo({top:0,behavior:'smooth'})"
+        aria-label="Back to top">
+        <i class="fas fa-arrow-up text-sm"></i>
+    </button>
+
+    <script>
+    // ============================================================
+    // Phase 3 — JS Core
+    // ============================================================
+
+    // Phase 3.1 — tab switcher
+    function switchTab(tabKey) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+        document.getElementById('panel-' + tabKey).classList.remove('hidden');
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('[data-tab="' + tabKey + '"]').classList.add('active');
+    }
+
+    // Phase 3.2 — card template (static, no expand)
+    function createCard(item) {
+        const tags = item.tags.map(t => `<span class="tech-tag">${t}</span>`).join('');
+        return `
+            <div class="contribution-card bg-white rounded-2xl border border-slate-200 p-6">
+                <h3 class="text-sm font-bold text-slate-900 mb-3 leading-snug">${item.title}</h3>
+                <p class="text-xs text-slate-600 leading-relaxed mb-4">${item.summary}</p>
+                <div class="flex flex-wrap gap-1.5">${tags}</div>
+            </div>`;
+    }
+
+    // Phase 3.3 — render all cards for a tab
+    function renderTab(tabKey) {
+        const panel = document.getElementById('panel-' + tabKey);
+        const items = contributionData[tabKey];
+        panel.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">${items.map(createCard).join('')}</div>`;
+    }
+
+    // Phase 3.4 — go-to-top scroll listener
+    window.addEventListener('scroll', () => {
+        document.getElementById('go-to-top').classList.toggle('visible', window.scrollY > 400);
+    });
+
+    // ============================================================
+    // Phases 4 & 5 — Contribution Data
+    // ============================================================
+    const contributionData = {
+
+        // ---- Phase 4: Backend (15 cards) ----
+        backend: [
+            {
+                title: 'Recommendation Engine',
+                summary: 'Built end-to-end personalized action plan pipeline with top-N ranking, fallback randomization, and dismissal-aware re-recommendation. Replaced M2M with PostgreSQL ArrayField + GIN indexing, eliminating N+1 queries throughout.',
+                tags: ['GIN indexing', 'ranking algorithm', 'N+1 elimination', 'service layer', 'Pydantic']
+            },
+            {
+                title: 'Survey Platform Overhaul',
+                summary: 'Redesigned the entire survey system — unified data model with bundle architecture and rollback semantics, self-service deployment, QA gates, and metaclass-enforced exception handling. Resolved a race condition in concurrent submissions.',
+                tags: ['bundle architecture', 'Django Ninja', 'metaclass pattern', 'race condition fix']
+            },
+            {
+                title: 'Data Privacy & Anonymization Engine',
+                summary: 'Built threshold-based anonymization for demographic data, distinguishing true absence from suppression. Handled partial responses, zero-score buckets, and multi-select edge cases with privacy-by-design principles.',
+                tags: ['threshold anonymization', 'statistical bucketing', 'privacy-by-design', 'CSV export']
+            },
+            {
+                title: 'Alerting & Risk APIs',
+                summary: 'Built second-gen alerting system surfacing risk-ranked data points, embedded chart payloads, and drill-down views. Introduced priority-ordered subtypes so the most critical alerts surface first.',
+                tags: ['risk scoring', 'priority ranking', 'nested API composition', 'Django Ninja']
+            },
+            {
+                title: 'Admin Safety & Audit Framework',
+                summary: 'Built a confirmation mixin for all side-effect admin actions, field-level diff audit logger with PII masking and Slack alerts, and PostgreSQL-native change tracking via pghistory with thread-safe UUID context.',
+                tags: ['Django admin mixins', 'pghistory', 'PII masking', 'XSS prevention', 'Slack alerts']
+            },
+            {
+                title: 'Authentication Suite',
+                summary: 'Shipped Google OAuth, email auth, SSO multi-domain support, 2FA with configurable grace periods, JWT payload optimization, and header-based multi-tenant request scoping with lru_cache resolution.',
+                tags: ['OAuth 2.0', 'TOTP 2FA', 'multi-tenant', 'JWT optimization', 'SSO multi-domain']
+            },
+            {
+                title: 'User Impersonation System',
+                summary: 'Built full impersonation system for support teams — scoped Knox tokens (read-only for certain roles), rate limiting, session cleanup on logout, and a complete audit trail.',
+                tags: ['Knox tokens', 'rate limiting', 'scoped permissions', 'audit logging']
+            },
+            {
+                title: 'Catalog & Resource Library',
+                summary: 'Replaced 3+ legacy tables with a unified S3-backed resource library — polymorphic metadata models, dynamic filtering APIs, data migration scripts, and automated cloud storage file sync.',
+                tags: ['polymorphic models', 'S3 integration', 'dynamic filtering', 'data migration']
+            },
+            {
+                title: 'Large-Scale Schema Migrations',
+                summary: 'Led three major migrations: Taxonomy V2 touching every endpoint and serializer, zero-downtime removal of 10+ legacy tables, and a cross-environment analytical data migration with drift-detection tooling.',
+                tags: ['phased migration', 'zero-downtime', 'drift detection', 'dependency analysis']
+            },
+            {
+                title: 'Query & Performance Optimization',
+                summary: 'Systematically eliminated N+1 queries across API and admin layers using select_related, prefetch_related, GIN indexes, lru_cache, and autocomplete_fields on large relational datasets.',
+                tags: ['select_related', 'prefetch_related', 'GIN indexing', 'lru_cache', 'autocomplete_fields']
+            },
+            {
+                title: 'Analytics APIs',
+                summary: 'Built analytics filter API with session-persistent state, KPI score metadata with industry-specific benchmarks, contextual tooltips, and server-side Mixpanel event tracking from backend endpoints.',
+                tags: ['session persistence', 'industry benchmarking', 'Mixpanel', 'DRF mixin']
+            },
+            {
+                title: 'Survey Application from Scratch',
+                summary: 'Built a complete Django Ninja survey app from scratch — CRUD with iterative titling, webhook-based status and results processing, bearer token auth, and a metaclass enforcing consistent exception handling across all endpoints.',
+                tags: ['Django Ninja', 'webhook processing', 'bearer token auth', 'metaclass pattern']
+            },
+            {
+                title: 'ETL & Data Pipeline',
+                summary: 'Authored 30+ ETL scripts handling multilingual survey data (RU/JP/KR/FR), PII detection and redaction, response remapping, deduplication, and benchmark data pipeline improvements with year-quarter grouping.',
+                tags: ['ETL scripting', 'i18n processing', 'PII redaction', 'idempotent transforms']
+            },
+            {
+                title: 'Third-Party Integrations',
+                summary: 'Built webhook ingestion for external event platforms, programmatic dashboard provisioning via third-party APIs, automated creation scripts, and custom DRF rate-limit exception handling with retry-after headers.',
+                tags: ['webhook validation', 'programmatic provisioning', 'idempotent processing', 'rate limiting']
+            },
+            {
+                title: 'Platform & Dev Tooling',
+                summary: 'Migrated to Poetry, built streaming CSV export for large datasets, added threaded comments API with polymorphic content types, login attribution tracking, and sandboxed scheduled job execution with safety guards.',
+                tags: ['Poetry', 'StreamingHttpResponse', 'polymorphic content types', 'attribution tracking']
+            }
+        ],
+
+        // ---- Phase 5.1: Frontend (5 cards) ----
+        frontend: [
+            {
+                title: 'Top-N Analytics Feature',
+                summary: 'Extended a fixed single-item view to configurable top-N analysis with interactive toggle and collapsible UI. API layer with backward-compatible schema fallback preventing deployment coupling; 57-test suite with shared test infrastructure.',
+                tags: ['React Query', 'backward-compatible API', 'React Testing Library', 'Vitest']
+            },
+            {
+                title: 'Data Privacy State Management',
+                summary: 'Replaced ambiguous sentinel values with a type-safe data classification system across analytics dashboard components. Fixed type coercion bugs and standardized conditional rendering across heatmaps, progress bars, and time-series charts.',
+                tags: ['TypeScript type guards', 'shared constants', 'conditional rendering', 'React']
+            },
+            {
+                title: 'Auth Flow Enhancement',
+                summary: 'Extended login and password reset flows to support both username and email-based auth with SSO-specific Redux Saga error interception and i18n updates across English and German.',
+                tags: ['Redux Saga', 'Yup validation', 'i18n', 'SSO compatibility']
+            },
+            {
+                title: 'Code Review & Release Management',
+                summary: 'Served as gatekeeper across two frontend codebases — reviewed and merged 31 PRs spanning analytics visualization, catalog UI migration to React Query with infinite scroll, 2FA, and multiple production releases.',
+                tags: ['code review', 'release management', 'React Query', 'infinite scroll']
+            },
+            {
+                title: 'Build Tooling & API Cleanup',
+                summary: 'Migrated from deprecated node-sass to dart-sass resolving Node.js compatibility issues, and trimmed unnecessary payload data from file upload and validation API calls.',
+                tags: ['dart-sass migration', 'API payload optimization', 'dependency modernization']
+            }
+        ],
+
+        // ---- Phase 5.2: AI & ML (3 cards) ----
+        aiml: [
+            {
+                title: 'AI Hackathon — Multi-Agent System',
+                summary: 'Replaced Flask with PydanticAI graph routing — 20–30% faster, 50% less routing code. MCP integration with 3-way intelligent routing (database, external API, failsafe); 74+ tests; real-time dashboards with Mermaid diagram visualization.',
+                tags: ['PydanticAI', 'MCP', 'graph routing', 'Django Ninja', 'Mermaid']
+            },
+            {
+                title: 'AI Agent Skill Plugins',
+                summary: 'Designed 3 developer workflow plugins for Claude Code and OpenAI Codex — analytics audit with P0–P3 severity tagging, login attribution implementation guide, and an interactive code review processor with dry-run and auto-fix modes.',
+                tags: ['Claude Code', 'OpenAI Codex', 'severity-tagged audit', 'interactive CLI']
+            },
+            {
+                title: 'MCP / RAG Prototype',
+                summary: 'Prototyped an MCP server with PydanticAI graph routing, retry logic, and state management. Designed a cost-optimized RAG architecture using FAISS-CPU and sentence-transformers targeting sub-200ms response times.',
+                tags: ['MCP server', 'PydanticAI', 'FAISS-CPU', 'RAG architecture', 'sentence-transformers']
+            }
+        ],
+
+        // ---- Phase 5.3: DevOps (3 cards) ----
+        devops: [
+            {
+                title: 'AI-Powered Test Coordinator Agent',
+                summary: 'Architected a ~4,700-line pytest orchestrator with parallel batch execution, automated failure triage by root cause, real-time progress tracking, and structured test reports.',
+                tags: ['multi-agent orchestration', 'parallel batch execution', 'automated triage', 'structured reporting']
+            },
+            {
+                title: 'CI/CD & Dev Automation',
+                summary: 'Built GitHub Actions Slack notifications for main branch updates, automated .env provisioning for git worktrees, extended migration generation scripts, and hardened database snapshot tooling with structured error messages.',
+                tags: ['GitHub Actions', 'Slack webhooks', 'git worktrees', 'developer experience']
+            },
+            {
+                title: 'Multi-Region Cloud Secrets Management',
+                summary: 'Configured application secrets across staging and production spanning multi-region AWS deployments — ECS task definitions, Secrets Manager configurations, and targeted rollbacks for environment consistency.',
+                tags: ['AWS Secrets Manager', 'ECS', 'multi-region', 'Terraform']
+            }
+        ],
+
+        // ---- Phase 5.4: Data Engineering (1 card) ----
+        data: [
+            {
+                title: 'Data Processing Toolkit',
+                summary: 'Rebuilt the core data processing pipeline with email-based respondent filtering, duplicate detection and reporting, multi-select header transformation, i18n support for translated survey responses (HTML tag stripping, label matching), and dry-run preview mode. Migrated tooling from pip to UV.',
+                tags: ['ETL pipeline', 'duplicate detection', 'i18n data processing', 'UV package management']
+            }
+        ]
+    };
+
+    // Phase 3.5 — initial render of all contribution tabs
+    ['backend', 'frontend', 'aiml', 'devops', 'data'].forEach(renderTab);
+
+    // ---- Certifications tab (separate card style) ----
+    const certData = [
+        {
+            icon: 'fab fa-aws',
+            iconBg: 'bg-orange-50',
+            iconColor: 'text-orange-500',
+            title: 'AWS Certified Cloud Practitioner',
+            issuer: 'Amazon Web Services',
+            badge: 'Active · Valid thru 2028',
+            badgeStyle: 'bg-green-50 text-green-700',
+            description: 'Validates foundational knowledge of AWS Cloud services, security, architecture, pricing, and support. Issued July 2024.',
+            verifyUrl: 'https://cp.certmetrics.com/amazon/en/public/verify/credential/f71ecc275b044d1a9319a0ebab86a5f7'
+        },
+        {
+            icon: 'fab fa-docker',
+            iconBg: 'bg-blue-50',
+            iconColor: 'text-blue-500',
+            title: 'Docker Mastery: Kubernetes + Swarm',
+            issuer: 'Udemy · Bret Fisher (Docker Captain Program)',
+            badge: 'Completed · 23 hrs',
+            badgeStyle: 'bg-slate-100 text-slate-600',
+            description: 'Comprehensive 23-hour course covering Docker, Kubernetes orchestration, and Swarm — taught by an official Docker Captain.',
+            verifyUrl: 'https://www.udemy.com/certificate/UC-8f421066-4c61-4d88-8f09-f20ff5a63baf/'
+        }
+    ];
+
+    function renderCerts() {
+        const panel = document.getElementById('panel-certs');
+        const cards = certData.map(c => `
+            <div class="bg-white rounded-2xl border border-slate-200 p-7 flex gap-6 transition-all duration-200 hover:shadow-md hover:border-blue-200">
+                <div class="w-16 h-16 flex-shrink-0 rounded-2xl ${c.iconBg} flex items-center justify-center">
+                    <i class="${c.icon} text-4xl ${c.iconColor}"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex flex-wrap items-start justify-between gap-3 mb-1">
+                        <h3 class="text-base font-bold text-slate-900 leading-snug">${c.title}</h3>
+                        <span class="flex-shrink-0 text-xs px-3 py-1 rounded-full font-semibold ${c.badgeStyle}">${c.badge}</span>
+                    </div>
+                    <p class="text-sm text-slate-500 mb-2">${c.issuer}</p>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-4">${c.description}</p>
+                    <a href="${c.verifyUrl}" target="_blank" rel="noopener"
+                       class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors">
+                        <i class="fas fa-external-link-alt" style="font-size:10px;"></i> Verify Certificate
+                    </a>
+                </div>
+            </div>`).join('');
+
+        panel.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">${cards}</div>`;
+    }
+
+    renderCerts();
+    </script>
 
 </body>
 </html>
