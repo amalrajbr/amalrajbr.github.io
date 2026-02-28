@@ -263,6 +263,11 @@
         document.getElementById('panel-' + tabKey).classList.remove('hidden');
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.querySelector('[data-tab="' + tabKey + '"]').classList.add('active');
+
+        // Scroll so the card grid is visible below fixed nav (65px) + sticky tab bar (48px)
+        const panel = document.getElementById('panel-' + tabKey);
+        const top = panel.getBoundingClientRect().top + window.scrollY - 65 - 48;
+        window.scrollTo({ top, behavior: 'smooth' });
     }
 
     // Phase 3.2 — card template (static, no expand)
