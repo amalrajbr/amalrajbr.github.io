@@ -61,12 +61,26 @@
     <nav class="fixed w-full bg-white/90 backdrop-blur-sm z-50 border-b border-slate-100">
         <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
             <span class="text-xl font-bold tracking-tight text-blue-800 underline decoration-blue-200">ARBR.dev</span>
+            <!-- Desktop nav -->
             <div class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-wider text-slate-600">
                 <a href="#about" class="hover:text-blue-600 transition">Overview</a>
                 <a href="#expertise" class="hover:text-blue-600 transition">Expertise</a>
                 <a href="#experience" class="hover:text-blue-600 transition">Experience</a>
                 <a href="#awards" class="hover:text-blue-600 transition">Recognition</a>
             </div>
+            <!-- Mobile hamburger button -->
+            <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-slate-100 transition" onclick="toggleMenu()" aria-label="Toggle menu">
+                <span class="menu-bar block w-5 h-0.5 bg-slate-700 transition-all duration-300"></span>
+                <span class="menu-bar block w-5 h-0.5 bg-slate-700 transition-all duration-300"></span>
+                <span class="menu-bar block w-5 h-0.5 bg-slate-700 transition-all duration-300"></span>
+            </button>
+        </div>
+        <!-- Mobile dropdown menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 px-6 py-4 flex flex-col space-y-4 text-sm font-semibold uppercase tracking-wider text-slate-600">
+            <a href="#about" onclick="closeMenu()" class="hover:text-blue-600 transition">Overview</a>
+            <a href="#expertise" onclick="closeMenu()" class="hover:text-blue-600 transition">Expertise</a>
+            <a href="#experience" onclick="closeMenu()" class="hover:text-blue-600 transition">Experience</a>
+            <a href="#awards" onclick="closeMenu()" class="hover:text-blue-600 transition">Recognition</a>
         </div>
     </nav>
 
@@ -256,6 +270,22 @@
     // ============================================================
     // Phase 3 — JS Core
     // ============================================================
+
+    // Mobile menu
+    function toggleMenu() {
+        const menu = document.getElementById('mobile-menu');
+        const bars = document.querySelectorAll('.menu-bar');
+        const isOpen = !menu.classList.contains('hidden');
+        menu.classList.toggle('hidden');
+        // Animate hamburger to X
+        bars[0].style.transform = isOpen ? '' : 'translateY(8px) rotate(45deg)';
+        bars[1].style.opacity  = isOpen ? '' : '0';
+        bars[2].style.transform = isOpen ? '' : 'translateY(-8px) rotate(-45deg)';
+    }
+    function closeMenu() {
+        document.getElementById('mobile-menu').classList.add('hidden');
+        document.querySelectorAll('.menu-bar').forEach(b => { b.style.transform = ''; b.style.opacity = ''; });
+    }
 
     // Phase 3.1 — tab switcher
     function switchTab(tabKey) {
