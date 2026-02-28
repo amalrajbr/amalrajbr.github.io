@@ -448,8 +448,8 @@
         data: [
             {
                 title: 'Data Processing Toolkit',
-                summary: 'Rebuilt the core data processing pipeline with email-based respondent filtering, duplicate detection and reporting, multi-select header transformation, i18n support for translated survey responses (HTML tag stripping, label matching), and dry-run preview mode. Migrated tooling from pip to UV.',
-                tags: ['ETL pipeline', 'duplicate detection', 'i18n data processing', 'UV package management']
+                summary: 'Rebuilt the core data processing pipeline with email-based respondent filtering, duplicate detection, and multi-select header transformation. Added internationalisation support to normalise survey responses from non-English speakers (RU/JP/KR/FR) — stripping HTML tags from translated choice values and fuzzy-matching them back to canonical English labels for consistent analysis. Includes dry-run preview mode. Migrated tooling from pip to UV.',
+                tags: ['ETL pipeline', 'duplicate detection', 'i18n normalisation', 'multilingual data', 'UV package management']
             }
         ]
     };
