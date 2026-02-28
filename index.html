@@ -159,7 +159,7 @@
                     <button class="tab-btn active" data-tab="backend" onclick="switchTab('backend')">
                         <i class="fas fa-server" style="font-size:12px;"></i>
                         <span>Backend</span>
-                        <span class="count-badge">15</span>
+                        <span class="count-badge">16</span>
                     </button>
                     <button class="tab-btn" data-tab="frontend" onclick="switchTab('frontend')">
                         <i class="fas fa-desktop" style="font-size:12px;"></i>
@@ -337,8 +337,8 @@
             },
             {
                 title: 'Large-Scale Schema Migrations',
-                summary: 'Led three major migrations: Taxonomy V2 touching every endpoint and serializer, zero-downtime removal of 10+ legacy tables, and a cross-environment analytical data migration with drift-detection tooling.',
-                tags: ['phased migration', 'zero-downtime', 'drift detection', 'dependency analysis']
+                summary: 'Led three major migrations: transformed legacy demographic data into a modernised granular taxonomy (touching every endpoint and serializer), zero-downtime removal of 10+ legacy tables, and a cross-environment analytical data migration with drift-detection tooling.',
+                tags: ['phased migration', 'zero-downtime', 'taxonomy modernisation', 'drift detection']
             },
             {
                 title: 'Query & Performance Optimization',
@@ -351,9 +351,9 @@
                 tags: ['session persistence', 'industry benchmarking', 'Mixpanel', 'DRF mixin']
             },
             {
-                title: 'Survey Application from Scratch',
-                summary: 'Built a complete Django Ninja survey app from scratch — CRUD with iterative titling, webhook-based status and results processing, bearer token auth, and a metaclass enforcing consistent exception handling across all endpoints.',
-                tags: ['Django Ninja', 'webhook processing', 'bearer token auth', 'metaclass pattern']
+                title: 'Pulse Survey Platform',
+                summary: 'Designed the Pulse Survey platform from scratch — data models, DB schema, and full API layer with Django Ninja + Pydantic schemas. Integrated with SurveyMonkey to create surveys programmatically; handled SM webhooks for automatic response syncing with DB-level locking to prevent duplicate writes from concurrent webhook deliveries.',
+                tags: ['Django Ninja', 'Pydantic', 'SurveyMonkey', 'webhook processing', 'DB locking', 'Knox auth', 'rate throttling']
             },
             {
                 title: 'ETL & Data Pipeline',
@@ -362,8 +362,13 @@
             },
             {
                 title: 'Third-Party Integrations',
-                summary: 'Built webhook ingestion for external event platforms, programmatic dashboard provisioning via third-party APIs, automated creation scripts, and custom DRF rate-limit exception handling with retry-after headers.',
-                tags: ['webhook validation', 'programmatic provisioning', 'idempotent processing', 'rate limiting']
+                summary: 'Built Eventbrite webhook ingestion to sync event creation and updates, SurveyMonkey webhook handling with respondent-level DB locks preventing duplicate processing, and programmatic dashboard provisioning via third-party APIs with DRF rate-limit exception handling.',
+                tags: ['Eventbrite', 'SurveyMonkey', 'DB locking', 'webhook validation', 'programmatic provisioning', 'idempotent processing']
+            },
+            {
+                title: 'Caching Architecture & Background Jobs',
+                summary: 'Implemented cache-aside pattern with Redis using proper eviction policies and a reconciliation strategy via rq-scheduler cron jobs. Built reusable thread-safe hot-key caches with LRU and TTL strategies, backed by RLock-based thread isolation.',
+                tags: ['Redis', 'cache-aside', 'rq-scheduler', 'LRU cache', 'TTL cache', 'RLocks', 'thread safety']
             },
             {
                 title: 'Platform & Dev Tooling',
