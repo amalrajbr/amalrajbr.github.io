@@ -13,7 +13,7 @@
         html { scroll-behavior: smooth; }
 
         /* Phase 1.7 — scroll offset for fixed nav */
-        #experience { scroll-margin-top: 65px; }
+        #experience, #admin-tooling { scroll-margin-top: 65px; }
 
         /* Phase 1.1 — tab button styles */
         .tab-btn {
@@ -64,6 +64,7 @@
             <!-- Desktop nav -->
             <div class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-wider text-slate-600">
                 <a href="#about" class="hover:text-blue-600 transition">Overview</a>
+                <a href="#admin-tooling" class="hover:text-blue-600 transition">Admin Tooling</a>
                 <a href="#expertise" class="hover:text-blue-600 transition">Expertise</a>
                 <a href="#experience" class="hover:text-blue-600 transition">Experience</a>
                 <a href="#awards" class="hover:text-blue-600 transition">Recognition</a>
@@ -78,6 +79,7 @@
         <!-- Mobile dropdown menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 px-6 py-4 flex flex-col space-y-4 text-sm font-semibold uppercase tracking-wider text-slate-600">
             <a href="#about" onclick="closeMenu()" class="hover:text-blue-600 transition">Overview</a>
+            <a href="#admin-tooling" onclick="closeMenu()" class="hover:text-blue-600 transition">Admin Tooling</a>
             <a href="#expertise" onclick="closeMenu()" class="hover:text-blue-600 transition">Expertise</a>
             <a href="#experience" onclick="closeMenu()" class="hover:text-blue-600 transition">Experience</a>
             <a href="#awards" onclick="closeMenu()" class="hover:text-blue-600 transition">Recognition</a>
@@ -88,7 +90,7 @@
         <div class="max-w-4xl mx-auto text-center">
             <h1 class="text-5xl md:text-7xl font-black text-slate-900 mb-6">Amal Raj <span class="text-gradient">Babu Raj</span></h1>
             <p class="text-xl md:text-2xl text-slate-500 leading-relaxed mb-10">
-                Backend-focused Software Engineer specialising in <span class="text-blue-700 font-semibold">Python, Django, Elixir, and Erlang</span>. I architect distributed systems, design data-intensive APIs, and build AI agents that actually ship.
+                Backend-focused Software Engineer specialising in <span class="text-blue-700 font-semibold">Python, Django, Elixir, and Erlang</span>. I build data-intensive APIs, internal admin tooling, distributed workflows, and AI agents that actually ship.
             </p>
             <div class="flex flex-wrap justify-center gap-4">
                 <a href="mailto:amalrajbrr@gmail.com" class="blue-gradient text-white px-10 py-4 rounded-lg font-bold shadow-xl shadow-blue-200 hover:scale-105 transition-transform">
@@ -119,6 +121,79 @@
                     <div class="text-blue-600 text-3xl mb-4"><i class="fas fa-briefcase"></i></div>
                     <h3 class="text-xl font-bold mb-2">HRM Systems</h3>
                     <p class="text-slate-600 text-sm leading-relaxed">Leading development teams to build comprehensive Human Resource Management products using functional programming.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="admin-tooling" class="py-24 px-6">
+        <div class="max-w-6xl mx-auto">
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-blue-600 mb-3">Internal Systems</p>
+            <h2 class="text-4xl font-extrabold text-slate-900 mb-4">Admin Tooling for High-Risk Operations</h2>
+            <p class="text-slate-500 text-lg max-w-3xl mb-6">
+                I build internal tools that make sensitive operational work safer: reviewed exports, cross-environment data movement, audit trails, background processing, and admin UX that prevents mistakes before they reach production.
+            </p>
+            <div class="flex flex-wrap gap-2 mb-12">
+                <span class="tech-tag">Django Admin</span>
+                <span class="tech-tag">Operational UX</span>
+                <span class="tech-tag">Audit Trails</span>
+                <span class="tech-tag">Background Jobs</span>
+                <span class="tech-tag">Data Integrity</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="contribution-card bg-white rounded-2xl border border-slate-200 p-7">
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">Access Export Desk</h3>
+                    <p class="text-sm text-slate-500 mb-4">Draft-backed CSV export workflow for sensitive user and employee access data.</p>
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                        Built a two-step export desk for Diversio and Optimo admins: define scope, review the exact export, then download. The workflow keeps filters, preview rows, selected columns, export metadata, and repeat downloads aligned through a server-owned draft instead of trusting browser state.
+                    </p>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-2">
+                        <span class="font-semibold text-slate-800">Highlights:</span>
+                        Scope and Review flow &nbsp;·&nbsp; typed baseline filters &nbsp;·&nbsp; CSV column selection &nbsp;·&nbsp; stream finalization &nbsp;·&nbsp; read-only export logs.
+                    </p>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-5">
+                        <span class="font-semibold text-slate-800">Result:</span>
+                        admins can export access data with a clear review step, consistent counts, safer repeat downloads, and an audit trail that explains what was exported and why.
+                    </p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Django</span>
+                        <span class="tech-tag">Django Admin</span>
+                        <span class="tech-tag">CSV Streaming</span>
+                        <span class="tech-tag">Typed Filters</span>
+                        <span class="tech-tag">Server-Side Drafts</span>
+                        <span class="tech-tag">Audit Logging</span>
+                        <span class="tech-tag">RBAC Boundaries</span>
+                    </div>
+                </div>
+
+                <div class="contribution-card bg-white rounded-2xl border border-slate-200 p-7">
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">Benchmark Import Console</h3>
+                    <p class="text-sm text-slate-500 mb-4">Cross-environment benchmark migration tooling with compare, import, locks, logs, and background execution.</p>
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                        Built an admin console for moving benchmark data between environments safely. The tool lets admins start a secure session, inspect benchmark differences, compare local and remote data, confirm imports, and track the result through audit logs and background jobs.
+                    </p>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-2">
+                        <span class="font-semibold text-slate-800">Highlights:</span>
+                        secure sessions &nbsp;·&nbsp; compare-before-import &nbsp;·&nbsp; drift detection &nbsp;·&nbsp; background jobs &nbsp;·&nbsp; advisory locks &nbsp;·&nbsp; Slack notifications.
+                    </p>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-5">
+                        <span class="font-semibold text-slate-800">Result:</span>
+                        benchmark migration became an observable admin workflow instead of a manual, high-risk operation. Admins can see what differs, choose what to import, and inspect a durable record of every migration attempt.
+                    </p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Django</span>
+                        <span class="tech-tag">Django Admin</span>
+                        <span class="tech-tag">RQ Jobs</span>
+                        <span class="tech-tag">Remote API Client</span>
+                        <span class="tech-tag">JWT Sessions</span>
+                        <span class="tech-tag">Encrypted Tokens</span>
+                        <span class="tech-tag">Advisory Locks</span>
+                        <span class="tech-tag">Audit Logs</span>
+                        <span class="tech-tag">Slack Notifications</span>
+                    </div>
                 </div>
             </div>
         </div>
