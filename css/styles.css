@@ -547,6 +547,12 @@ html:not(.js) .tabs-bar, html:not(.js) .panel, html:not(.js) .menu-btn { display
 @media (min-width: 735px) and (max-height: 640px) {
     .scrolly .step > p:not(.step-kicker) { font-size: 15px; }
     .scrolly .chips { display: none; }
+    /* Short landscape viewports: the intro copy block (heading plus lede, over the room reserved for the
+       steps) is taller than the screen. Start in the compact state the active steps use: smaller heading,
+       lede collapsed. Pinned mode only, so the static / no-script layout keeps its lede. */
+    .scrolly .showcase-head .section-title { font-size: clamp(28px, 3vw, 40px); }
+    .scrolly .showcase-head .lede { opacity: 0; max-height: 0; margin-top: 0; }
+    .scrolly .showcase-copy { top: calc(50% + var(--nav-h) / 2); } /* centre in the space below the nav */
 }
 
 /* ---------- forced colors (Windows High Contrast): backgrounds are dropped, so mark state with outlines ---------- */
