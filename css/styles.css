@@ -162,7 +162,7 @@ svg, canvas { display: block; }
 .brand { font-size: 17px; font-weight: 600; letter-spacing: -.03em; }
 .gnav-links { display: flex; gap: clamp(18px, 2.8vw, 38px); margin-left: auto; }
 .gnav-links a { font-size: 12px; letter-spacing: -.01em; opacity: .78; transition: opacity .2s; }
-.gnav-links a:hover, .gnav-links a[aria-current="true"] { opacity: 1; }
+.gnav-links a:hover, .gnav-links a[aria-current="location"] { opacity: 1; }
 .gnav-cta {
     font-size: 12px; font-weight: 500; color: #fff; background: var(--blue);
     padding: 5px 14px; border-radius: 999px; transition: background .25s;

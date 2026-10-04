@@ -49,7 +49,7 @@ const sectionObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         navLinks.forEach((a) => {
-            if (a.getAttribute('href') === '#' + entry.target.id) a.setAttribute('aria-current', 'true');
+            if (a.getAttribute('href') === '#' + entry.target.id) a.setAttribute('aria-current', 'location');
             else a.removeAttribute('aria-current');
         });
     });
