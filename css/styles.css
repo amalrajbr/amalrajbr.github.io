@@ -619,6 +619,10 @@ html:not(.js) .tabs-bar, html:not(.js) .panel, html:not(.js) .menu-btn { display
     .scrolly .showcase-head { display: contents; }
     .scrolly .showcase-head .section-title { font-size: 26px; }
     .scrolly .showcase-head .lede, .scrolly .steps { grid-area: 3 / 1; align-self: start; }
+    /* The lede and the steps now overlap while one fades out and the other in: the lede leaves quickly, and returns
+       only once the step has mostly gone, so two paragraphs are never legible on top of each other. */
+    .scrolly .showcase-head .lede { transition: opacity .5s var(--ease) .25s, max-height .6s var(--ease), margin .6s var(--ease); }
+    .scrolly .has-step .showcase-head .lede { transition: opacity .18s var(--ease), max-height .6s var(--ease), margin .6s var(--ease); }
 }
 /* The CSS stand-in for the object (shown without WebGL, and for a moment before the canvas takes over) on stacked phones
    just above that: with the intro lede open the copy block starts about 395 px above the bottom edge, and the stand-in,
