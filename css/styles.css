@@ -604,14 +604,16 @@ html:not(.js) .tabs-bar, html:not(.js) .panel, html:not(.js) .menu-btn { display
 @media (max-width: 734px) and (max-height: 720px), (max-aspect-ratio: 21/20) and (max-height: 720px) {
     .scrolly .chips { display: none; }
 }
-/* Short portrait viewports (about 640 px tall and under: 320x568, 360x640). The bottom-anchored copy block, with the room
-   reserved for the steps, takes more than half of the screen, so an object that is 54% of the stage runs behind it.
-   Pinned mode only, and two changes. The copy starts in the compact state the active steps use (smaller heading) and
-   keeps it, with the intro lede sharing the cell the steps appear in, so the block is as short as it gets and its
-   height never changes between intro and steps. And the stage becomes a column, so the object gets exactly the space
-   between the header and the copy, at whatever width the copy wraps. A subset of the stacked arrangement: the portrait
-   guard leaves 568x320 and other narrow landscape phones on the block above, unchanged. */
-@media (max-aspect-ratio: 21/20) and (max-height: 640px) {
+/* Short portrait viewports (up to 840 px tall: 320x568 through 412x800). The bottom-anchored copy block, with the room
+   reserved for the steps, takes about half of the screen, so an object that is 54% of the stage reaches into the first
+   line of the intro copy: measured, the eyebrow sat partly on the plates up to about 800 px tall with WebGL, and on the
+   CSS stand-in up to about 840 px. Pinned mode only, and two changes. The copy starts in the compact state the active
+   steps use (smaller heading) and keeps it, with the intro lede sharing the cell the steps appear in, so the block is
+   as short as it gets and its height never changes between intro and steps. And the stage becomes a column, so the
+   object gets exactly the space between the header and the copy, at whatever width the copy wraps. A subset of the
+   stacked arrangement: the portrait guard leaves 568x320 and other narrow landscape phones on the block above. The
+   query measures the viewport while the stage is 100svh, so on iOS with its dynamic toolbar the two can disagree. */
+@media (max-aspect-ratio: 21/20) and (max-height: 840px) {
     .scrolly .showcase-stage { display: flex; flex-direction: column; }
     .scrolly .showcase .visual {
         position: relative; inset: auto; order: 0; flex: 1 1 0; min-height: 0; height: auto; margin: var(--nav-h) 0 8px;
@@ -628,18 +630,6 @@ html:not(.js) .tabs-bar, html:not(.js) .panel, html:not(.js) .menu-btn { display
        only once the step has mostly gone, so two paragraphs are never legible on top of each other. */
     .scrolly .showcase-head .lede { transition: opacity .5s var(--ease) .25s, max-height .6s var(--ease), margin .6s var(--ease); }
     .scrolly .has-step .showcase-head .lede { transition: opacity .18s var(--ease), max-height .6s var(--ease), margin .6s var(--ease); }
-}
-/* The CSS stand-in for the object (shown without WebGL, and for a moment before the canvas takes over) on stacked phones
-   just above that: with the intro lede open the copy block starts about 395 px above the bottom edge, and the stand-in,
-   centred in the top 54%, reaches into its first line. Fit it to the room between the header and the copy instead. The
-   3D object is hidden whenever the canvas runs, so this does not change what a visitor with WebGL sees. */
-@media (max-width: 734px) and (min-height: 641px) and (max-height: 720px), (max-aspect-ratio: 21/20) and (min-height: 641px) and (max-height: 720px) {
-    .scrolly .showcase .stack-fallback {
-        --fb-w: min(78vw, 340px, calc((100svh - 472px) / .95));
-        --fb-top: calc(60px + var(--fb-w) * .413);
-        --sep: calc(var(--fb-w) * .23);
-        width: var(--fb-w);
-    }
 }
 @media (min-width: 735px) and (max-height: 640px) {
     .scrolly .step > p:not(.step-kicker) { font-size: 15px; }
