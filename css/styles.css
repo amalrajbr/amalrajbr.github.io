@@ -544,7 +544,12 @@ html:not(.js) .tabs-bar, html:not(.js) .panel, html:not(.js) .menu-btn { display
    layout needs room for the copy column next to the object. This query is the same string as
    STACKED_QUERY in js/main.js, which also tells the 3D stage which arrangement is on. */
 @media (max-width: 734px), (max-aspect-ratio: 21/20) {
-    .scrolly .showcase .visual { inset: 0 0 auto 0; height: 54%; }
+    .scrolly .showcase .visual {
+        inset: 0 0 auto 0; height: 54%;
+        /* the floor glow reaches past the canvas on larger stacked viewports: fade it out instead of cutting it */
+        -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 56px), transparent);
+        mask-image: linear-gradient(to bottom, #000 calc(100% - 56px), transparent);
+    }
     .scrolly .showcase .stack-fallback { left: 50%; --fb-top: 50%; width: min(78vw, 340px); }
     .scrolly .showcase-copy {
         top: auto; bottom: 0; transform: none; right: var(--gutter); width: auto; max-width: 640px;
