@@ -147,6 +147,16 @@ svg, canvas { display: block; }
     }
 }
 @keyframes rise { from { opacity: 0; transform: translateY(28px); } }
+/* The cards lift on hover with the independent `translate` property: the reveal's `transform: none` above cannot cancel it.
+   The reveal rule would also replace the cards' own transition list and put the stagger delay on every transition, so
+   it is restated here per property: only opacity and transform wait their turn, the hover transitions never do. */
+.js .card[data-reveal], .js .tool-card[data-reveal] {
+    transition: opacity 1s var(--ease), transform 1s var(--ease), translate .55s var(--ease), box-shadow .55s var(--ease);
+    transition-delay: calc(var(--i, 0) * 90ms), calc(var(--i, 0) * 90ms), 0s, 0s;
+}
+@media (prefers-reduced-motion: no-preference) {
+    .card:hover, .tool-card:hover { translate: 0 -4px; }
+}
 
 /* ---------- global nav ---------- */
 .gnav {
@@ -415,9 +425,9 @@ svg, canvas { display: block; }
 .card {
     display: flex; flex-direction: column; background: #fff; border-radius: 24px; padding: 28px;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, .04);
-    transition: transform .55s var(--ease), box-shadow .55s var(--ease), opacity 1s var(--ease);
+    transition: translate .55s var(--ease), box-shadow .55s var(--ease), opacity 1s var(--ease);
 }
-.card:hover { transform: translateY(-4px); box-shadow: 0 0 0 1px rgba(0, 0, 0, .04), 0 24px 44px -16px rgba(0, 0, 0, .2); }
+.card:hover { box-shadow: 0 0 0 1px rgba(0, 0, 0, .04), 0 24px 44px -16px rgba(0, 0, 0, .2); }
 .card h3 { font-size: 20px; line-height: 1.2; font-weight: 600; letter-spacing: -.025em; }
 .card p { margin-top: 10px; font-size: 15px; line-height: 1.5; letter-spacing: -.016em; color: var(--ink-2); }
 .card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 18px; }
@@ -470,9 +480,9 @@ html:not(.js) .tabs-bar, html:not(.js) .panel, html:not(.js) .menu-btn { display
 .tool-card {
     display: flex; flex-direction: column; background: #fff; border-radius: 24px; padding: clamp(24px, 3vw, 36px);
     box-shadow: 0 0 0 1px rgba(0, 0, 0, .04);
-    transition: transform .55s var(--ease), box-shadow .55s var(--ease), opacity 1s var(--ease);
+    transition: translate .55s var(--ease), box-shadow .55s var(--ease), opacity 1s var(--ease);
 }
-.tool-card:hover { transform: translateY(-4px); box-shadow: 0 0 0 1px rgba(0, 0, 0, .04), 0 24px 44px -16px rgba(0, 0, 0, .2); }
+.tool-card:hover { box-shadow: 0 0 0 1px rgba(0, 0, 0, .04), 0 24px 44px -16px rgba(0, 0, 0, .2); }
 .tool-card h3 { font-size: clamp(22px, 2.2vw, 28px); line-height: 1.15; font-weight: 700; letter-spacing: -.03em; }
 .tool-sub { margin-top: 8px; font-size: 16px; line-height: 1.4; color: var(--ink-3); }
 .tool-body { margin-top: 18px; font-size: 16px; line-height: 1.5; color: var(--ink-2); }
