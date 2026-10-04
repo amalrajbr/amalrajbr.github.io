@@ -137,6 +137,16 @@ svg, canvas { display: block; }
     transition-delay: calc(var(--i, 0) * 90ms);
 }
 .js [data-reveal].in { opacity: 1; transform: none; }
+/* The four hero elements are the first thing seen (and the LCP): a short CSS-only entrance that starts at first
+   paint, not after main.js has run and the observer has fired. Below-the-fold content keeps the observer reveal. */
+@media (prefers-reduced-motion: no-preference) {
+    .js .hero-copy [data-reveal] {
+        opacity: 1; transform: none; transition: none;
+        animation: rise .6s var(--ease) backwards;
+        animation-delay: calc(var(--i, 0) * 60ms);
+    }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(28px); } }
 
 /* ---------- global nav ---------- */
 .gnav {
