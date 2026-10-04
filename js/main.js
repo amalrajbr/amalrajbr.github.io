@@ -290,7 +290,7 @@ function loadStage() {
             .then((m) => m.createStage({
                 onLost: () => { root.classList.remove('webgl'); stage3d = null; stageLoading = null; stageFailed = true; },
             }))
-            .then((s) => { stage3d = s; root.classList.add('webgl'); requestUpdate(); return s; })
+            .then((s) => { stage3d = s; requestUpdate(); return s; })
             .catch((err) => { stageFailed = true; root.classList.remove('webgl'); console.warn('3D stage unavailable, using the static stack.', err); return null; });
     }
     return stageLoading;
@@ -302,8 +302,11 @@ function syncStage() {
     visibility.forEach((ratio, name) => { if (ratio > 0 && (!best || ratio > best[1])) best = [name, ratio]; });
     if (!best) { if (stage3d) stage3d.pause(); return; }
     loadStage().then((s) => {
-        if (!s) return;
+        // Motion may have been reduced again while the stage was loading.
+        if (!s || !canTry3D()) return;
         const [name] = best;
+        // Re-added on every show: a runtime switch of reduced motion off removes it and re-shows the stage.
+        root.classList.add('webgl');
         s.show(name, mounts[name], name === 'showcase' ? callouts : []);
     });
 }
