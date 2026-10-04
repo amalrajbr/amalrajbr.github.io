@@ -468,13 +468,13 @@ html:not(.js) .tabs-bar, html:not(.js) .panel, html:not(.js) .menu-btn { display
 }
 
 /* ---------- admin tooling ---------- */
-.admin { background: var(--bg-2); padding: clamp(80px, 12vw, 160px) 0; }
+.admin { background: var(--bg-2); padding: clamp(80px, 12vw, 168px) 0; }
 .admin .section-title { margin-top: 8px; max-width: 18ch; }
 .admin .lede { margin-top: 20px; max-width: 760px; }
 .tags-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
 .tags-row li {
-    font-size: 13px; font-weight: 500; letter-spacing: -.005em;
-    padding: 6px 13px; border-radius: 999px; background: #fff; color: var(--ink-3);
+    font-size: 12px; font-weight: 500; letter-spacing: -.005em;
+    padding: 5px 11px; border-radius: 999px; background: #fff; color: var(--ink-3);
 }
 .tool-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: clamp(36px, 5vw, 56px); }
 .tool-card {
@@ -483,10 +483,10 @@ html:not(.js) .tabs-bar, html:not(.js) .panel, html:not(.js) .menu-btn { display
     transition: translate .55s var(--ease), box-shadow .55s var(--ease), opacity 1s var(--ease);
 }
 .tool-card:hover { box-shadow: 0 0 0 1px rgba(0, 0, 0, .04), 0 24px 44px -16px rgba(0, 0, 0, .2); }
-.tool-card h3 { font-size: clamp(22px, 2.2vw, 28px); line-height: 1.15; font-weight: 700; letter-spacing: -.03em; }
+.tool-card h3 { font-size: 24px; line-height: 1.2; font-weight: 600; letter-spacing: -.025em; } /* the .card.span2 title tier */
 .tool-sub { margin-top: 8px; font-size: 16px; line-height: 1.4; color: var(--ink-3); }
 .tool-body { margin-top: 18px; font-size: 16px; line-height: 1.5; color: var(--ink-2); }
-.tool-note { margin-top: 14px; font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+.tool-note { margin-top: 14px; font-size: 15px; line-height: 1.5; letter-spacing: -.016em; color: var(--ink-2); }
 .tool-note strong { color: var(--ink); font-weight: 600; }
 .tool-card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 22px; }
 .tool-card .tags li {
