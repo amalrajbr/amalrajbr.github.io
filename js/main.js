@@ -226,6 +226,8 @@ function update() {
     const heroP = scrolly ? trackProgress(heroEl, heroStageEl) : 0;
     const showP = scrolly ? trackProgress(showcaseTrack, showcaseStageEl) : 0;
     heroEl.style.setProperty('--p', heroP.toFixed(4));
+    // The copy's opacity reaches 0 at heroP of about 0.556; from there its links must not take focus or clicks.
+    heroCopyEl.classList.toggle('is-gone', heroP >= 0.55);
     // The back-to-top button would sit on the pinned 3D stage and its copy.
     toTop.classList.toggle('visible', sy > 700 && !(scrolly && showP > 0 && showP < 1));
 

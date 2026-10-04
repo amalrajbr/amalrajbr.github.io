@@ -240,6 +240,9 @@ svg, canvas { display: block; }
     transform: translate3d(0, calc(var(--p, 0) * -70px), 0) scale(calc(1 - var(--p, 0) * .05));
     will-change: transform, opacity;
 }
+/* Faded out completely: its links must not stay focusable or clickable (toggled from update() in main.js).
+   Only the controls are hidden; the heading and text stay in the accessibility tree. */
+.scrolly .hero-copy.is-gone .cta-row { visibility: hidden; }
 
 /* ---------- overview ---------- */
 .statement { padding: clamp(80px, 13vw, 180px) 0 clamp(72px, 10vw, 140px); background: var(--bg); }
@@ -480,9 +483,10 @@ html:not(.js) .tabs-bar, html:not(.js) .panel, html:not(.js) .menu-btn { display
     background: rgba(29, 29, 31, .78); color: #fff;
     -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
     opacity: 0; transform: translateY(10px); pointer-events: none;
-    transition: opacity .35s var(--ease), transform .35s var(--ease), background .25s;
+    visibility: hidden; /* out of the tab order while invisible; flips after the fade-out */
+    transition: opacity .35s var(--ease), transform .35s var(--ease), background .25s, visibility 0s linear .35s;
 }
-.to-top.visible { opacity: 1; transform: none; pointer-events: auto; }
+.to-top.visible { opacity: 1; transform: none; pointer-events: auto; visibility: visible; transition-delay: 0s; }
 .to-top:hover { background: #000; }
 
 /* ---------- responsive ---------- */
