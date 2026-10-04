@@ -36,6 +36,7 @@ function setMenu(open) {
     // Closing returns focus to the button that opened the menu. (A link click that scrolls to a section
     // moves focus again afterwards; at desktop widths the button is display: none, so this is a no-op.)
     if (!open) menuBtn.focus();
+    requestUpdate(); // the header's on-dark tint follows the menu state (see update)
 }
 menuBtn.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
 menu.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
@@ -228,7 +229,8 @@ function update() {
     nav.classList.toggle('scrolled', sy > 8);
     tabsBar.classList.toggle('stuck', tabsBar.getBoundingClientRect().top <= NAV_H + 1);
     const over = (el) => { const r = el.getBoundingClientRect(); return r.top <= NAV_H && r.bottom > NAV_H; };
-    nav.classList.toggle('on-dark', over(toolsSection) || over(awardsSection));
+    // The open menu is a light overlay: keep the header light under it, whatever section is behind.
+    nav.classList.toggle('on-dark', menu.hidden && (over(toolsSection) || over(awardsSection)));
     updateScrub();
 
     const scrolly = root.classList.contains('scrolly');
