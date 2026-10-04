@@ -218,7 +218,9 @@
                 <div class="panel" role="tabpanel" id="panel-devops" aria-labelledby="tab-devops" hidden></div>
                 <div class="panel" role="tabpanel" id="panel-data" aria-labelledby="tab-data" hidden></div>
                 <div class="panel" role="tabpanel" id="panel-certs" aria-labelledby="tab-certs" hidden></div>
-                <noscript><p class="noscript">The work contributions are rendered with JavaScript. Enable it to read them.</p></noscript>
+                <!-- Shown by CSS whenever the page is not running its script: JavaScript off, or the boot failed
+                     and the head script dropped the js class. One element covers both states. -->
+                <p class="nojs-note">The work contributions are rendered with JavaScript, which is not running on this page. Enable JavaScript or reload the page to read them.</p>
             </div>
         </section>
 

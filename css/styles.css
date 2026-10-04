@@ -429,7 +429,18 @@ svg, canvas { display: block; }
 .cert-issuer { margin-top: 4px; font-size: 14px; color: var(--ink-3); }
 .cert-desc { margin-top: 10px; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
 .cert .link-arrow { margin-top: 14px; font-size: 15px; }
-.noscript { padding: 24px; text-align: center; color: var(--ink-3); }
+
+/* No script, or the script failed to boot (the head script drops .js again): the tabs, the empty panels
+   and the hamburger would be dead controls, so hide them, explain, and keep the primary nav usable. */
+.nojs-note { display: none; padding: 24px; text-align: center; color: var(--ink-3); }
+html:not(.js) .nojs-note { display: block; }
+html:not(.js) .tabs-bar, html:not(.js) .panel, html:not(.js) .menu-btn { display: none; }
+@media (max-width: 900px) {
+    html:not(.js) .gnav { position: static; height: auto; }
+    html:not(.js) .gnav .wrap { flex-wrap: wrap; padding-block: 6px; gap: 0 24px; }
+    html:not(.js) .gnav-links { display: flex; flex-wrap: wrap; gap: 0 20px; margin-left: 0; }
+    html:not(.js) .gnav-links a { display: block; padding: 8px 0; }
+}
 
 /* ---------- stack ---------- */
 .stack { background: var(--bg); padding: clamp(80px, 12vw, 168px) 0; }
