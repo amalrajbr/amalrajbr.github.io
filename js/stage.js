@@ -62,7 +62,7 @@ function radialTexture() {
     return new THREE.CanvasTexture(c);
 }
 
-export async function createStage({ onLost } = {}) {
+export async function createStage({ onLost, onRestored } = {}) {
     const canvas = document.createElement('canvas');
     canvas.setAttribute('aria-hidden', 'true');
 
@@ -72,12 +72,38 @@ export async function createStage({ onLost } = {}) {
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
 
-    canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); pause(); if (onLost) onLost(); });
-
     const scene = new THREE.Scene();
-    const pmrem = new THREE.PMREMGenerator(renderer);
-    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-    pmrem.dispose();
+
+    // Reflections come from a PMREM render target. three re-initialises its own GL state when a lost
+    // context is restored, but that target's contents are gone and are not redrawn, so it is rebuilt then.
+    let environment = null;
+    function buildEnvironment() {
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        const room = new RoomEnvironment();
+        const target = pmrem.fromScene(room, 0.04);
+        pmrem.dispose();
+        room.dispose();
+        if (environment) environment.dispose();
+        environment = target;
+        scene.environment = target.texture;
+    }
+    buildEnvironment();
+
+    // A lost context can come back (common on mobile GPUs under memory pressure): stop rendering and let
+    // the page show its CSS stack meanwhile, then rebuild what lived only on the GPU and carry on.
+    let lost = false;
+    canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); lost = true; pause(); if (onLost) onLost(); });
+    canvas.addEventListener('webglcontextrestored', () => {
+        try {
+            buildEnvironment();
+        } catch (err) {
+            console.warn('3D stage could not recover from a lost WebGL context, using the static stack.', err);
+            return;
+        }
+        lost = false;
+        snap = true;
+        if (onRestored) onRestored();
+    });
 
     const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 60);
     camera.position.set(0, 0, CAM_Z);
@@ -288,7 +314,7 @@ export async function createStage({ onLost } = {}) {
         step(dt, now / 1000);
         renderer.render(scene, camera);
     }
-    function resume() { if (running) return; running = true; last = 0; raf = requestAnimationFrame(frame); }
+    function resume() { if (running || lost) return; running = true; last = 0; raf = requestAnimationFrame(frame); }
     function pause() { running = false; cancelAnimationFrame(raf); }
 
     return {

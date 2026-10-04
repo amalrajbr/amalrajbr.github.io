@@ -275,10 +275,11 @@ onChange(reduceMotion, () => {
 const mounts = { hero: $('[data-mount="hero"]'), showcase: $('[data-mount="showcase"]') };
 const visibility = new Map();
 let stageFailed = false;
+let contextLost = false; // a lost WebGL context may be restored: keep the stage object, show the CSS stack meanwhile
 let stageLoading = null;
 
 const saveData = navigator.connection && navigator.connection.saveData;
-const canTry3D = () => !reduceMotion.matches && !saveData && !stageFailed;
+const canTry3D = () => !reduceMotion.matches && !saveData && !stageFailed && !contextLost;
 
 function loadStage() {
     if (stage3d || !canTry3D()) return Promise.resolve(stage3d);
@@ -290,7 +291,8 @@ function loadStage() {
         })
             .then(() => import('./stage.js'))
             .then((m) => m.createStage({
-                onLost: () => { root.classList.remove('webgl'); stage3d = null; stageLoading = null; stageFailed = true; },
+                onLost: () => { contextLost = true; root.classList.remove('webgl'); },
+                onRestored: () => { contextLost = false; syncStage(); },
             }))
             .then((s) => { stage3d = s; requestUpdate(); return s; })
             .catch((err) => { stageFailed = true; root.classList.remove('webgl'); console.warn('3D stage unavailable, using the static stack.', err); return null; });
