@@ -56,7 +56,8 @@
             <nav aria-label="Primary">
                 <ul class="gnav-links">
                     <li><a href="#overview">Overview</a></li>
-                    <li><a href="#tools">Tools</a></li>
+                    <li><a href="#admin-tooling">Admin Tooling</a></li>
+                    <li><a href="#tools">Plugins</a></li>
                     <li><a href="#experience">Experience</a></li>
                     <li><a href="#stack">Stack</a></li>
                     <li><a href="#awards">Recognition</a></li>
@@ -73,7 +74,8 @@
         <nav aria-label="Mobile">
             <ul>
                 <li><a href="#overview">Overview</a></li>
-                <li><a href="#tools">Tools</a></li>
+                <li><a href="#admin-tooling">Admin Tooling</a></li>
+                <li><a href="#tools">Plugins</a></li>
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#stack">Stack</a></li>
                 <li><a href="#awards">Recognition</a></li>
@@ -92,7 +94,7 @@
                     <h1 class="display" id="hero-title" data-reveal style="--i:1">Amal Raj <span class="grad">Babu Raj</span></h1>
                     <p class="lede" data-reveal style="--i:2">
                         Backend-focused Senior Software Engineer specialising in <strong>Python, Django, Elixir, and Erlang</strong>.
-                        I architect distributed systems, design data-intensive APIs, and build AI agents that actually ship.
+                        I build data-intensive APIs, internal admin tooling, distributed workflows, and AI agents that actually ship.
                     </p>
                     <div class="cta-row" data-reveal style="--i:3">
                         <a class="btn" href="mailto:amalrajbrr@gmail.com">Contact now</a>
@@ -130,6 +132,62 @@
             </div>
         </section>
 
+        <!-- ========================= ADMIN TOOLING ========================= -->
+        <section class="admin" id="admin-tooling" aria-labelledby="admin-title">
+            <div class="wrap">
+                <p class="eyebrow" data-reveal>Internal Systems</p>
+                <h2 class="section-title" id="admin-title" data-reveal style="--i:1">Admin Tooling for High-Risk Operations</h2>
+                <p class="lede" data-reveal style="--i:2">I build internal tools that make sensitive operational work safer: reviewed exports, cross-environment data movement, audit trails, background processing, and admin UX that prevents mistakes before they reach production.</p>
+                <ul class="tags tags-row" data-reveal style="--i:3">
+                    <li>Django Admin</li>
+                    <li>Operational UX</li>
+                    <li>Audit Trails</li>
+                    <li>Background Jobs</li>
+                    <li>Data Integrity</li>
+                </ul>
+
+                <div class="tool-cards">
+                    <article class="tool-card" data-reveal>
+                        <h3>Access Export Desk</h3>
+                        <p class="tool-sub">Draft-backed CSV export workflow for sensitive user and employee access data.</p>
+                        <p class="tool-body">Built a two-step export desk for Diversio and Optimo admins: define scope, review the exact export, then download. The workflow keeps filters, preview rows, selected columns, export metadata, and repeat downloads aligned through a server-owned draft instead of trusting browser state.</p>
+                        <p class="tool-note"><strong>Highlights:</strong> Scope and Review flow &nbsp;&middot;&nbsp; typed baseline filters &nbsp;&middot;&nbsp; CSV column selection &nbsp;&middot;&nbsp; stream finalization &nbsp;&middot;&nbsp; read-only export logs.</p>
+                        <p class="tool-note"><strong>Result:</strong> admins can export access data with a clear review step, consistent counts, safer repeat downloads, and an audit trail that explains what was exported and why.</p>
+                        <ul class="tags">
+                            <li>Python</li>
+                            <li>Django</li>
+                            <li>Django Admin</li>
+                            <li>CSV Streaming</li>
+                            <li>Typed Filters</li>
+                            <li>Server-Side Drafts</li>
+                            <li>Audit Logging</li>
+                            <li>RBAC Boundaries</li>
+                        </ul>
+                    </article>
+
+                    <article class="tool-card" data-reveal style="--i:1">
+                        <h3>Benchmark Import Console</h3>
+                        <p class="tool-sub">Cross-environment benchmark migration tooling with compare, import, locks, logs, and background execution.</p>
+                        <p class="tool-body">Built an admin console for moving benchmark data between environments safely. The tool lets admins start a secure session, inspect benchmark differences, compare local and remote data, confirm imports, and track the result through audit logs and background jobs.</p>
+                        <p class="tool-note"><strong>Highlights:</strong> secure sessions &nbsp;&middot;&nbsp; compare-before-import &nbsp;&middot;&nbsp; drift detection &nbsp;&middot;&nbsp; background jobs &nbsp;&middot;&nbsp; advisory locks &nbsp;&middot;&nbsp; Slack notifications.</p>
+                        <p class="tool-note"><strong>Result:</strong> benchmark migration became an observable admin workflow instead of a manual, high-risk operation. Admins can see what differs, choose what to import, and inspect a durable record of every migration attempt.</p>
+                        <ul class="tags">
+                            <li>Python</li>
+                            <li>Django</li>
+                            <li>Django Admin</li>
+                            <li>RQ Jobs</li>
+                            <li>Remote API Client</li>
+                            <li>JWT Sessions</li>
+                            <li>Encrypted Tokens</li>
+                            <li>Advisory Locks</li>
+                            <li>Audit Logs</li>
+                            <li>Slack Notifications</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
         <!-- ====================== DEVELOPER TOOLING ====================== -->
         <section class="showcase" id="tools" data-theme="dark" aria-labelledby="tools-title">
             <div class="showcase-track" data-track="showcase">
@@ -144,7 +202,7 @@
                 </ul>
                 <div class="showcase-copy">
                     <header class="showcase-head">
-                        <p class="eyebrow" data-reveal>Developer tooling</p>
+                        <p class="eyebrow" data-reveal>Claude Code plugins</p>
                         <h2 class="section-title" id="tools-title" data-reveal style="--i:1">Built to build.</h2>
                         <p class="lede" data-reveal style="--i:2">Three Claude Code plugins I wrote for my own workflow. They review the work, fix it, and keep a long run moving while I do something else.</p>
                     </header>
@@ -301,7 +359,8 @@
             <p>&copy; 2026 Amal Raj Babu Raj <span class="dot">|</span> Built for High Performance</p>
             <ul>
                 <li><a href="#overview">Overview</a></li>
-                <li><a href="#tools">Tools</a></li>
+                <li><a href="#admin-tooling">Admin Tooling</a></li>
+                <li><a href="#tools">Plugins</a></li>
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#awards">Recognition</a></li>
             </ul>

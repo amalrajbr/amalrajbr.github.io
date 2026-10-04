@@ -54,7 +54,7 @@ const sectionObserver = new IntersectionObserver((entries) => {
         });
     });
 }, { rootMargin: '-50% 0px -50% 0px' });
-['overview', 'tools', 'experience', 'stack', 'awards'].forEach((id) => { const el = document.getElementById(id); if (el) sectionObserver.observe(el); });
+['overview', 'admin-tooling', 'tools', 'experience', 'stack', 'awards'].forEach((id) => { const el = document.getElementById(id); if (el) sectionObserver.observe(el); });
 
 /* ------------------------------------------------------ content: cards + certs */
 // Keeps the card grid gapless on a 3-column layout (2-column and 1-column stay gapless anyway).
