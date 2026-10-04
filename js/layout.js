@@ -16,3 +16,13 @@ export function idleAmplitude(age, hold = 4, fade = 2) {
     const t = Math.min(1, Math.max(0, (age - hold) / fade));
     return 1 - t * t * (3 - 2 * t);
 }
+
+/**
+ * Renderer pixel ratio: the device ratio, up to 2, but at most 1.5 when the canvas would then hold more
+ * than about 1.5 megapixels of device pixels (width x height x ratio squared). A large retina canvas
+ * costs 4x the pixels of a 1x one; small canvases keep the full ratio.
+ */
+export function pixelRatioFor(width, height, dpr) {
+    const ratio = Math.min(dpr || 1, 2);
+    return width * height * ratio * ratio > 1.5e6 ? Math.min(ratio, 1.5) : ratio;
+}

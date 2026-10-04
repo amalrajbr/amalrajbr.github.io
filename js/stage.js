@@ -4,7 +4,7 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { calloutLeft, idleAmplitude } from './layout.js';
+import { calloutLeft, idleAmplitude, pixelRatioFor } from './layout.js';
 
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -67,7 +67,7 @@ export async function createStage({ onLost } = {}) {
     canvas.setAttribute('aria-hidden', 'true');
 
     // Throws when WebGL is unavailable; the caller falls back to the CSS stack.
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setClearColor(0x000000, 0);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
@@ -165,7 +165,7 @@ export async function createStage({ onLost } = {}) {
         if (!mount) return;
         width = Math.max(1, mount.clientWidth);
         height = Math.max(1, mount.clientHeight);
-        renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+        renderer.setPixelRatio(pixelRatioFor(width, height, devicePixelRatio));
         renderer.setSize(width, height, false);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
