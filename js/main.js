@@ -23,10 +23,19 @@ const menu = $('#menu');
 const menuBtn = $('#menu-btn');
 const toTop = $('#to-top');
 
+// Everything outside the header is inert while the menu overlay is open, so Tab cannot reach content
+// the overlay covers (and, on close, focus is not stranded there).
+const behindMenu = $$('main, footer, .skip, #to-top');
+
 function setMenu(open) {
+    if (open === !menu.hidden) return;
     menuBtn.setAttribute('aria-expanded', String(open));
     menu.hidden = !open;
     document.body.style.overflow = open ? 'hidden' : '';
+    behindMenu.forEach((el) => el.toggleAttribute('inert', open));
+    // Closing returns focus to the button that opened the menu. (A link click that scrolls to a section
+    // moves focus again afterwards; at desktop widths the button is display: none, so this is a no-op.)
+    if (!open) menuBtn.focus();
 }
 menuBtn.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
 menu.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
