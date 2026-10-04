@@ -620,6 +620,18 @@ html:not(.js) .tabs-bar, html:not(.js) .panel, html:not(.js) .menu-btn { display
     .scrolly .showcase-head .section-title { font-size: 26px; }
     .scrolly .showcase-head .lede, .scrolly .steps { grid-area: 3 / 1; align-self: start; }
 }
+/* The CSS stand-in for the object (shown without WebGL, and for a moment before the canvas takes over) on stacked phones
+   just above that: with the intro lede open the copy block starts about 395 px above the bottom edge, and the stand-in,
+   centred in the top 54%, reaches into its first line. Fit it to the room between the header and the copy instead. The
+   3D object is hidden whenever the canvas runs, so this does not change what a visitor with WebGL sees. */
+@media (max-width: 734px) and (min-height: 641px) and (max-height: 720px), (max-aspect-ratio: 21/20) and (min-height: 641px) and (max-height: 720px) {
+    .scrolly .showcase .stack-fallback {
+        --fb-w: min(78vw, 340px, calc((100svh - 472px) / .95));
+        --fb-top: calc(60px + var(--fb-w) * .413);
+        --sep: calc(var(--fb-w) * .23);
+        width: var(--fb-w);
+    }
+}
 @media (min-width: 735px) and (max-height: 640px) {
     .scrolly .step > p:not(.step-kicker) { font-size: 15px; }
     .scrolly .chips { display: none; }
