@@ -11,6 +11,10 @@ const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const onChange = (mq, fn) => (mq.addEventListener ? mq.addEventListener('change', fn) : mq.addListener(fn));
+// The one switch between the side-by-side and the stacked (object on top, copy underneath) layout of
+// the pinned sections. styles.css carries the identical query: change both together.
+const STACKED_QUERY = '(max-width: 734px), (max-aspect-ratio: 21/20)';
+const stackedMQ = matchMedia(STACKED_QUERY);
 const NAV_H = 48;
 
 /* ---------------------------------------------------------------- nav + menu */
@@ -236,7 +240,7 @@ function update() {
     if (stage3d) {
         // offsetTop/offsetHeight ignore the scroll-driven transform on .hero-copy.
         const heroLayout = { bottom: heroCopyEl.offsetTop + heroCopyEl.offsetHeight, h: heroStageEl.offsetHeight };
-        stage3d.update({ hero: heroP, showcase: showP, step, heroLayout });
+        stage3d.update({ hero: heroP, showcase: showP, step, heroLayout, stacked: stackedMQ.matches });
     }
 }
 function requestUpdate() {
@@ -246,6 +250,7 @@ function requestUpdate() {
 }
 addEventListener('scroll', requestUpdate, { passive: true });
 addEventListener('resize', requestUpdate);
+onChange(stackedMQ, requestUpdate);
 onChange(reduceMotion, () => {
     root.classList.toggle('scrolly', !reduceMotion.matches);
     if (reduceMotion.matches && stage3d) { stage3d.pause(); root.classList.remove('webgl'); }

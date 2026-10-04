@@ -500,15 +500,9 @@ svg, canvas { display: block; }
     .seg { margin-inline: 0; }
     .showcase-outro { flex-direction: column; align-items: flex-start; }
 
-    /* pinned showcase: object on top, copy underneath */
+    /* phone sizing for the pinned sections (the arrangement itself is the stacked block below) */
     .scrolly .hero { height: 160vh; height: 160svh; }
     .scrolly .showcase-track { height: 420vh; height: 420svh; }
-    .scrolly .showcase .visual { inset: 0 0 auto 0; height: 54%; }
-    .scrolly .showcase .stack-fallback { left: 50%; --fb-top: 50%; width: min(78vw, 340px); }
-    .scrolly .showcase-copy {
-        top: auto; bottom: 0; transform: none; left: var(--gutter); right: var(--gutter); width: auto;
-        padding-bottom: calc(26px + env(safe-area-inset-bottom));
-    }
     .scrolly .showcase-head .section-title { font-size: 34px; }
     .scrolly .has-step .showcase-head .section-title { font-size: 26px; }
     .scrolly .showcase-head .lede { font-size: 17px; }
@@ -516,10 +510,23 @@ svg, canvas { display: block; }
     .scrolly .step h3 { font-size: 22px; margin-top: 10px; }
     .scrolly .step > p:not(.step-kicker) { font-size: 15px; margin-top: 8px; }
     .scrolly .chips { margin-top: 12px; }
+}
+
+/* Stacked arrangement of the pinned sections: object on top, copy underneath, no callouts.
+   Phones and any portrait-ish viewport (tablets, tall narrow windows) use it, because the side-by-side
+   layout needs room for the copy column next to the object. This query is the same string as
+   STACKED_QUERY in js/main.js, which also tells the 3D stage which arrangement is on. */
+@media (max-width: 734px), (max-aspect-ratio: 21/20) {
+    .scrolly .showcase .visual { inset: 0 0 auto 0; height: 54%; }
+    .scrolly .showcase .stack-fallback { left: 50%; --fb-top: 50%; width: min(78vw, 340px); }
+    .scrolly .showcase-copy {
+        top: auto; bottom: 0; transform: none; right: var(--gutter); width: auto; max-width: 640px;
+        padding-bottom: calc(26px + env(safe-area-inset-bottom));
+    }
     .scrolly .callouts { display: none; }
     .hero .stack-fallback { --fb-top: 74%; width: min(80vw, 360px); }
 }
-@media (max-width: 734px) and (max-height: 720px) {
+@media (max-width: 734px) and (max-height: 720px), (max-aspect-ratio: 21/20) and (max-height: 720px) {
     .scrolly .chips { display: none; }
 }
 @media (min-width: 735px) and (max-height: 640px) {

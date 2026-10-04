@@ -4,6 +4,7 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { calloutLeft } from './layout.js';
 
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -133,11 +134,15 @@ export async function createStage({ onLost } = {}) {
 
     /* ---- state ---- */
     const S = { rotY: 0, rotX: 0.4, explode: 0, scale: 1, posX: 0, posY: 0, active: new Float32Array(3), pointerX: 0, pointerY: 0 };
-    const input = { hero: 0, showcase: 0, step: -1 };
+    // `stacked` mirrors the page's own layout switch (see STACKED_QUERY in main.js and the stacked
+    // block in styles.css). The canvas aspect cannot stand in for it: in the stacked arrangement the
+    // canvas is only the top part of the stage.
+    const input = { hero: 0, showcase: 0, step: -1, stacked: false };
     const pointer = { x: 0, y: 0 };
     let mode = 'hero';
     let mount = null;
     let calloutEls = [];
+    let calloutW = []; // pill widths in px, measured on show/resize (0 = not measured or not displayed)
     let snap = true;
     let width = 1, height = 1;
     const v = new THREE.Vector3();
@@ -162,6 +167,7 @@ export async function createStage({ onLost } = {}) {
         renderer.setSize(width, height, false);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
+        calloutW = calloutEls.map((el) => el.offsetWidth);
     }
     const resizeObserver = new ResizeObserver(resize);
 
@@ -176,7 +182,7 @@ export async function createStage({ onLost } = {}) {
     function targets(t) {
         const visH = 2 * CAM_Z * Math.tan((FOV * Math.PI) / 360);
         const visW = visH * camera.aspect;
-        const wide = camera.aspect > 1.05;
+        const wide = !input.stacked;
         const pxPerWorld = height / visH;
         const idle = Math.sin(t * 0.45);
 
@@ -250,15 +256,18 @@ export async function createStage({ onLost } = {}) {
             glow.intensity = damp(glow.intensity, 0, 6 * k, dt);
         }
 
-        // DOM callouts: project each plate to screen space.
-        if (showing && calloutEls.length) {
-            // Pills sit just past the plates' right edge: half the slab's on-screen width plus a gap.
+        // DOM callouts: project each plate to screen space. The stacked arrangement hides them.
+        if (showing && calloutEls.length && !input.stacked) {
+            // Pills sit just past the plates' right edge: half the slab's on-screen width plus a gap,
+            // pulled back in when that would push a pill past the right edge of the mount.
             const offset = S.scale * (height / (2 * CAM_Z * Math.tan((FOV * Math.PI) / 360))) * 1.95 + 28;
             plates.forEach((plate, i) => {
                 const el = calloutEls[i];
                 if (!el) return;
+                if (!calloutW[i]) calloutW[i] = el.offsetWidth;
                 plate.getWorldPosition(v).project(camera);
-                el.style.setProperty('--x', ((v.x * 0.5 + 0.5) * width + offset).toFixed(1) + 'px');
+                const x = calloutLeft((v.x * 0.5 + 0.5) * width + offset, calloutW[i], width);
+                el.style.setProperty('--x', x.toFixed(1) + 'px');
                 el.style.setProperty('--y', ((-v.y * 0.5 + 0.5) * height - 16).toFixed(1) + 'px');
             });
         }
@@ -289,6 +298,7 @@ export async function createStage({ onLost } = {}) {
                 resizeObserver.observe(mount);
             }
             calloutEls = Array.from(callouts || []);
+            calloutW = [];
             resize();
             setMode(name);
             resume();
