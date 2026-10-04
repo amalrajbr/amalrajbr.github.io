@@ -7,3 +7,12 @@
 export function calloutLeft(x, pillWidth, mountWidth, gutter = 16) {
     return Math.max(0, Math.min(x, mountWidth - gutter - pillWidth));
 }
+
+/**
+ * Amplitude (1 -> 0) of the stage's idle wobble. It runs for `hold` seconds after a stage comes on
+ * screen, then eases out over `fade` seconds so the pose settles; scroll and pointer motion are separate.
+ */
+export function idleAmplitude(age, hold = 4, fade = 2) {
+    const t = Math.min(1, Math.max(0, (age - hold) / fade));
+    return 1 - t * t * (3 - 2 * t);
+}

@@ -248,6 +248,8 @@ function update() {
         showcaseStageEl.classList.toggle('has-step', step >= 0);
     }
     calloutBox.classList.toggle('on', showP > 0.16);
+    // The "Keep scrolling" chevron only animates (a few times) while the section is pinned on screen.
+    showcaseStageEl.classList.toggle('is-pinned', showP > 0 && showP < 1);
     if (stage3d) {
         // offsetTop/offsetHeight ignore the scroll-driven transform on .hero-copy.
         const heroLayout = { bottom: heroCopyEl.offsetTop + heroCopyEl.offsetHeight, h: heroStageEl.offsetHeight };

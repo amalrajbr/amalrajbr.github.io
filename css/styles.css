@@ -345,8 +345,9 @@ svg, canvas { display: block; }
 .scrolly .scroll-hint::after {
     content: ""; display: block; width: 7px; height: 7px; margin: 10px auto 0;
     border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg);
-    animation: hint 1.8s var(--ease) infinite;
 }
+/* Two nudges (3.6s) each time the section is pinned, then it rests: nothing keeps moving on its own. */
+.scrolly .is-pinned .scroll-hint::after { animation: hint 1.8s var(--ease) 2; }
 @keyframes hint { 0%, 100% { transform: translateY(0) rotate(45deg); opacity: .4; } 50% { transform: translateY(5px) rotate(45deg); opacity: 1; } }
 .scrolly .has-step .scroll-hint { opacity: 0; }
 .scrolly .callouts { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none; }

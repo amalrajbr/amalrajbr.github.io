@@ -4,7 +4,7 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { calloutLeft } from './layout.js';
+import { calloutLeft, idleAmplitude } from './layout.js';
 
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -144,11 +144,13 @@ export async function createStage({ onLost } = {}) {
     let calloutEls = [];
     let calloutW = []; // pill widths in px, measured on show/resize (0 = not measured or not displayed)
     let snap = true;
+    let idleAge = 0; // seconds the current mode has been on screen; drives the idle wobble's fade-out
     let width = 1, height = 1;
     const v = new THREE.Vector3();
 
     function setMode(next) {
         if (mode === next && !snap) return;
+        if (mode !== next) idleAge = 0;
         mode = next;
         const dark = next === 'showcase';
         floorMat.color.set(dark ? 0x2f6bff : 0x000000);
@@ -184,7 +186,7 @@ export async function createStage({ onLost } = {}) {
         const visW = visH * camera.aspect;
         const wide = !input.stacked;
         const pxPerWorld = height / visH;
-        const idle = Math.sin(t * 0.45);
+        const idle = Math.sin(t * 0.45) * idleAmplitude(idleAge);
 
         if (mode === 'hero') {
             const p = input.hero;
@@ -279,8 +281,10 @@ export async function createStage({ onLost } = {}) {
     function frame(now) {
         raf = requestAnimationFrame(frame);
         // rAF timestamps can precede performance.now() on the first frame: never let dt go negative.
-        const dt = last ? clamp((now - last) / 1000, 0.001, 0.05) : 0.016;
+        const elapsed = last ? (now - last) / 1000 : 0.016;
+        const dt = clamp(elapsed, 0.001, 0.05);
         last = now;
+        idleAge += Math.min(elapsed, 1); // wall-clock seconds on screen, so slow frames do not stretch the wobble
         step(dt, now / 1000);
         renderer.render(scene, camera);
     }
