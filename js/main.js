@@ -75,7 +75,7 @@ function renderCerts() {
                 </div>
                 <p class="cert-issuer">${esc(c.issuer)}</p>
                 <p class="cert-desc">${esc(c.description)}</p>
-                <a class="link-arrow" href="${esc(c.verifyUrl)}" target="_blank" rel="noopener">Verify certificate</a>
+                ${c.verifyUrl ? `<a class="link-arrow" href="${esc(c.verifyUrl)}" target="_blank" rel="noopener">Verify certificate</a>` : ''}
             </div>
         </article>`).join('') + '</div>';
     $('#tab-certs .count').textContent = certData.length;

@@ -3,8 +3,18 @@
 
 export const contributionData = {
 
-    // ---- Phase 4: Backend (15 cards) ----
+    // ---- Backend ----
     backend: [
+        {
+            title: 'Concurrent API Batching',
+            summary: 'Refactored a sequential retrieval of 300 records into batched requests of 30, run concurrently under asyncio.Semaphore limits, cutting a legacy processing pipeline from 25 minutes to 3 seconds.',
+            tags: ['asyncio', 'Semaphore', 'request batching', 'concurrency limits']
+        },
+        {
+            title: 'Lifecycle Monitoring & Admin Dashboards',
+            summary: 'Normalized the database schema with real-time lifecycle status monitoring and built custom Django admin dashboards for day-to-day operations.',
+            tags: ['schema normalization', 'Django admin', 'status monitoring']
+        },
         {
             title: 'Recommendation Engine',
             summary: 'Built end-to-end personalized action plan pipeline with top-N ranking, fallback randomization, and dismissal-aware re-recommendation. Replaced M2M with PostgreSQL ArrayField + GIN indexing, eliminating N+1 queries throughout.',
@@ -87,8 +97,13 @@ export const contributionData = {
         }
     ],
 
-    // ---- Phase 5.1: Frontend (5 cards) ----
+    // ---- Frontend ----
     frontend: [
+        {
+            title: 'Workflow Orchestration Platform',
+            summary: 'Architected a platform on Django, FastAPI, React, TypeScript and Tailwind CSS that automates file orchestration and API retries under SLA constraints.',
+            tags: ['Django', 'FastAPI', 'React', 'TypeScript', 'Tailwind CSS', 'SLA']
+        },
         {
             title: 'Top-N Analytics Feature',
             summary: 'Extended a fixed single-item view to configurable top-N analysis with interactive toggle and collapsible UI. API layer with backward-compatible schema fallback preventing deployment coupling; 57-test suite with shared test infrastructure.',
@@ -116,8 +131,18 @@ export const contributionData = {
         }
     ],
 
-    // ---- Phase 5.2: AI & ML (3 cards) ----
+    // ---- AI & ML ----
     aiml: [
+        {
+            title: 'AI-Assisted Development Workflows',
+            summary: 'Accelerated AI-assisted development with reusable agent skills and structured workflows for AI coding tools.',
+            tags: ['agent skills', 'structured workflows', 'AI coding tools']
+        },
+        {
+            title: 'Agent-Driven Validation Pipelines',
+            summary: 'Engineered step-strict automated validation pipelines for enterprise workflows, driven by custom AI agents inside internal chat platforms.',
+            tags: ['AI agents', 'validation pipelines', 'enterprise workflows']
+        },
         {
             title: 'AI Hackathon — Multi-Agent System',
             summary: 'Replaced Flask with PydanticAI graph routing — 20–30% faster, 50% less routing code. MCP integration with 3-way intelligent routing (database, external API, failsafe); 74+ tests; real-time dashboards with Mermaid diagram visualization.',
@@ -135,8 +160,18 @@ export const contributionData = {
         }
     ],
 
-    // ---- Phase 5.3: DevOps (3 cards) ----
+    // ---- DevOps ----
     devops: [
+        {
+            title: 'Developer Environment & Commit Quality',
+            summary: 'Standardized the developer environment on uv, enforcing automated linting, comprehensive docstrings and strict commit-quality checks through prek, a Rust-based git hook manager.',
+            tags: ['uv', 'prek', 'git hooks', 'linting', 'docstrings']
+        },
+        {
+            title: 'Module Internalization',
+            summary: 'Brought external modules in-house, eliminating cross-repo dependencies and making the system easier to maintain.',
+            tags: ['dependency management', 'cross-repo cleanup', 'maintainability']
+        },
         {
             title: 'AI-Powered Test Coordinator Agent',
             summary: 'Architected a ~4,700-line pytest orchestrator with parallel batch execution, automated failure triage by root cause, real-time progress tracking, and structured test reports.',
@@ -154,7 +189,7 @@ export const contributionData = {
         }
     ],
 
-    // ---- Phase 5.4: Data Engineering (1 card) ----
+    // ---- Data Engineering ----
     data: [
         {
             title: 'Data Processing Toolkit',
@@ -165,6 +200,14 @@ export const contributionData = {
 };
 
 export const certData = [
+    {
+        icon: 'i-spark',
+        title: 'AWS Certified AI Practitioner',
+        issuer: 'Amazon Web Services',
+        badge: 'Perfect score',
+        badgeTone: 'good',
+        description: 'Validates foundational knowledge of AI, machine learning and generative AI, responsible AI practices, and the AWS services used to build with them.'
+    },
     {
         icon: 'i-cloud',
         title: 'AWS Certified Cloud Practitioner',
