@@ -54,7 +54,8 @@ const sectionObserver = new IntersectionObserver((entries) => {
         });
     });
 }, { rootMargin: '-50% 0px -50% 0px' });
-['overview', 'admin-tooling', 'tools', 'experience', 'stack', 'awards'].forEach((id) => { const el = document.getElementById(id); if (el) sectionObserver.observe(el); });
+// The hero and the contact block have no link of their own: observed so that reaching them clears the mark.
+['top', 'overview', 'admin-tooling', 'tools', 'experience', 'stack', 'awards', 'contact'].forEach((id) => { const el = document.getElementById(id); if (el) sectionObserver.observe(el); });
 
 /* ------------------------------------------------------ content: cards + certs */
 // Keeps the card grid gapless on a 3-column layout (2-column and 1-column stay gapless anyway).

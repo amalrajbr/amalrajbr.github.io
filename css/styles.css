@@ -551,8 +551,6 @@ html:not(.js) .tabs-bar, html:not(.js) .panel, html:not(.js) .menu-btn { display
 @media (max-width: 900px) {
     .gnav-links, .gnav-cta { display: none; }
     .menu-btn { display: block; margin-left: auto; }
-}
-@media (max-width: 900px) {
     .tool-cards { grid-template-columns: 1fr; }
 }
 @media (max-width: 734px) {
