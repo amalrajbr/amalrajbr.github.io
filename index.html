@@ -201,22 +201,22 @@
                 <div class="wrap">
                     <div class="seg" role="tablist" aria-label="Work contribution areas" id="seg">
                         <span class="seg-thumb" aria-hidden="true"></span>
-                        <button class="seg-tab" role="tab" id="tab-backend" data-tab="backend" aria-selected="true" aria-controls="panel-backend"><svg class="icon" aria-hidden="true"><use href="#i-server"/></svg><span>Backend</span><span class="count"></span></button>
-                        <button class="seg-tab" role="tab" id="tab-frontend" data-tab="frontend" aria-selected="false" aria-controls="panel-frontend" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-desktop"/></svg><span>Full-Stack</span><span class="count"></span></button>
-                        <button class="seg-tab" role="tab" id="tab-aiml" data-tab="aiml" aria-selected="false" aria-controls="panel-aiml" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg><span>AI &amp; ML</span><span class="count"></span></button>
-                        <button class="seg-tab" role="tab" id="tab-devops" data-tab="devops" aria-selected="false" aria-controls="panel-devops" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-cloud"/></svg><span>DevOps</span><span class="count"></span></button>
-                        <button class="seg-tab" role="tab" id="tab-data" data-tab="data" aria-selected="false" aria-controls="panel-data" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-database"/></svg><span>Data Eng</span><span class="count"></span></button>
-                        <button class="seg-tab" role="tab" id="tab-certs" data-tab="certs" aria-selected="false" aria-controls="panel-certs" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg><span>Certifications</span><span class="count"></span></button>
+                        <button class="seg-tab" type="button" role="tab" id="tab-backend" data-tab="backend" aria-selected="true" aria-controls="panel-backend"><svg class="icon" aria-hidden="true"><use href="#i-server"/></svg><span>Backend</span><span class="count"></span></button>
+                        <button class="seg-tab" type="button" role="tab" id="tab-frontend" data-tab="frontend" aria-selected="false" aria-controls="panel-frontend" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-desktop"/></svg><span>Full-Stack</span><span class="count"></span></button>
+                        <button class="seg-tab" type="button" role="tab" id="tab-aiml" data-tab="aiml" aria-selected="false" aria-controls="panel-aiml" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg><span>AI &amp; ML</span><span class="count"></span></button>
+                        <button class="seg-tab" type="button" role="tab" id="tab-devops" data-tab="devops" aria-selected="false" aria-controls="panel-devops" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-cloud"/></svg><span>DevOps</span><span class="count"></span></button>
+                        <button class="seg-tab" type="button" role="tab" id="tab-data" data-tab="data" aria-selected="false" aria-controls="panel-data" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-database"/></svg><span>Data Eng</span><span class="count"></span></button>
+                        <button class="seg-tab" type="button" role="tab" id="tab-certs" data-tab="certs" aria-selected="false" aria-controls="panel-certs" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg><span>Certifications</span><span class="count"></span></button>
                     </div>
                 </div>
             </div>
 
             <div class="wrap work-body">
-                <div class="panel" role="tabpanel" id="panel-backend" aria-labelledby="tab-backend"></div>
-                <div class="panel" role="tabpanel" id="panel-frontend" aria-labelledby="tab-frontend" hidden></div>
-                <div class="panel" role="tabpanel" id="panel-aiml" aria-labelledby="tab-aiml" hidden></div>
-                <div class="panel" role="tabpanel" id="panel-devops" aria-labelledby="tab-devops" hidden></div>
-                <div class="panel" role="tabpanel" id="panel-data" aria-labelledby="tab-data" hidden></div>
+                <div class="panel" role="tabpanel" id="panel-backend" aria-labelledby="tab-backend" tabindex="0"></div>
+                <div class="panel" role="tabpanel" id="panel-frontend" aria-labelledby="tab-frontend" tabindex="0" hidden></div>
+                <div class="panel" role="tabpanel" id="panel-aiml" aria-labelledby="tab-aiml" tabindex="0" hidden></div>
+                <div class="panel" role="tabpanel" id="panel-devops" aria-labelledby="tab-devops" tabindex="0" hidden></div>
+                <div class="panel" role="tabpanel" id="panel-data" aria-labelledby="tab-data" tabindex="0" hidden></div>
                 <div class="panel" role="tabpanel" id="panel-certs" aria-labelledby="tab-certs" hidden></div>
                 <!-- Shown by CSS whenever the page is not running its script: JavaScript off, or the boot failed
                      and the head script dropped the js class. One element covers both states. -->
