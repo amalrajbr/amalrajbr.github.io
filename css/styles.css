@@ -549,6 +549,14 @@ html:not(.js) .tabs-bar, html:not(.js) .panel, html:not(.js) .menu-btn { display
     .scrolly .chips { display: none; }
 }
 
+/* ---------- forced colors (Windows High Contrast): backgrounds are dropped, so mark state with outlines ---------- */
+@media (forced-colors: active) {
+    .seg-thumb { display: none; }
+    .seg-tab[aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
+    .seg-tab[aria-selected="true"]:focus-visible { outline-width: 3px; outline-offset: 2px; }
+    .btn { border: 1px solid ButtonText; }
+}
+
 /* ---------- reduced motion: nothing pinned, nothing hidden, nothing animated ---------- */
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
