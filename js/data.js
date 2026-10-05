@@ -204,9 +204,10 @@ export const certData = [
         icon: 'i-spark',
         title: 'AWS Certified AI Practitioner',
         issuer: 'Amazon Web Services',
-        badge: 'Perfect score',
+        badge: 'Active · Valid thru 2029',
         badgeTone: 'good',
-        description: 'Validates foundational knowledge of AI, machine learning and generative AI, responsible AI practices, and the AWS services used to build with them.'
+        description: 'Validates foundational knowledge of AI, machine learning and generative AI, responsible AI practices, and the AWS services used to build with them. Issued September 2026, passed with a perfect score.',
+        verifyUrl: 'https://www.credly.com/badges/addcec97-b023-4268-8039-c6fcf89a6d65/public_url'
     },
     {
         icon: 'i-cloud',
@@ -214,8 +215,8 @@ export const certData = [
         issuer: 'Amazon Web Services',
         badge: 'Active · Valid thru 2028',
         badgeTone: 'good',
-        description: 'Validates foundational knowledge of AWS Cloud services, security, architecture, pricing, and support. Issued July 2024.',
-        verifyUrl: 'https://cp.certmetrics.com/amazon/en/public/verify/credential/f71ecc275b044d1a9319a0ebab86a5f7'
+        description: 'Validates foundational knowledge of AWS Cloud services, security, architecture, pricing, and support. Issued December 2025.',
+        verifyUrl: 'https://www.credly.com/badges/8dd4af03-d89c-4cbf-9200-e82817de0c31/linked_in_profile'
     },
     {
         icon: 'i-box',
