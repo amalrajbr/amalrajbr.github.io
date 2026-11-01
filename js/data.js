@@ -7,8 +7,13 @@ export const contributionData = {
     backend: [
         {
             title: 'Concurrent API Batching',
-            summary: 'Refactored a sequential retrieval of 300 records into batched requests of 30, run concurrently under asyncio.Semaphore limits, cutting a legacy processing pipeline from 25 minutes to 3 seconds.',
-            tags: ['asyncio', 'Semaphore', 'request batching', 'concurrency limits']
+            summary: 'Delivered a 50x speedup on Archer retrieval (100 FRA IDs: ~200 seconds down to ~4 seconds) by batching IDs into single API calls, parallelizing them with an asyncio.Semaphore and event queue, and caching rule data so FRAs sharing a rule skip redundant lookups.',
+            tags: ['asyncio', 'Semaphore', 'request batching', 'rule caching', 'event queue']
+        },
+        {
+            title: 'Window-Restricted Staging Engine',
+            summary: 'Engineered a staging engine for firewall rule attestation that only runs in two 20-minute windows each hour, with concurrency capped at 2-3 requests, RQ workers plus a scheduler poller, and retry thresholds with backoff lifting a ~40% first-pass success rate. Added a manual status override for unreliable poll results.',
+            tags: ['RQ workers', 'RQ scheduler', 'retry with backoff', 'concurrency caps', 'status lifecycle']
         },
         {
             title: 'Lifecycle Monitoring & Admin Dashboards',
@@ -44,6 +49,11 @@ export const contributionData = {
             title: 'Authentication Suite',
             summary: 'Shipped Google OAuth, email auth, SSO multi-domain support, 2FA with configurable grace periods, JWT payload optimization, and header-based multi-tenant request scoping with lru_cache resolution.',
             tags: ['OAuth 2.0', 'TOTP 2FA', 'multi-tenant', 'JWT optimization', 'SSO multi-domain']
+        },
+        {
+            title: 'Envelope Encryption & Blind Indexing',
+            summary: 'Implemented per-tenant envelope encryption with Fernet keys managed through AWS KMS, RBAC across REST APIs, and blind indexing so encrypted data stays quickly searchable.',
+            tags: ['Fernet', 'AWS KMS', 'blind indexing', 'RBAC', 'per-tenant isolation']
         },
         {
             title: 'User Impersonation System',
@@ -82,8 +92,8 @@ export const contributionData = {
         },
         {
             title: 'Third-Party Integrations',
-            summary: 'Built Eventbrite webhook ingestion to sync event creation and updates, SurveyMonkey webhook handling with respondent-level DB locks preventing duplicate processing, and programmatic dashboard provisioning via third-party APIs with DRF rate-limit exception handling.',
-            tags: ['Eventbrite', 'SurveyMonkey', 'DB locking', 'webhook validation', 'programmatic provisioning', 'idempotent processing']
+            summary: 'Built webhook integrations with Slack, Eventbrite, Zoom Events and ClickUp (Eventbrite syncing event creation and updates), SurveyMonkey webhook handling with respondent-level DB locks preventing duplicate processing, and programmatic dashboard provisioning via third-party APIs with DRF rate-limit exception handling.',
+            tags: ['Eventbrite', 'Zoom Events', 'ClickUp', 'Slack', 'SurveyMonkey', 'DB locking', 'webhook validation', 'programmatic provisioning', 'idempotent processing']
         },
         {
             title: 'Caching Architecture & Background Jobs',
@@ -101,8 +111,13 @@ export const contributionData = {
     frontend: [
         {
             title: 'Workflow Orchestration Platform',
-            summary: 'Architected a platform on Django, FastAPI, React, TypeScript and Tailwind CSS that automates file orchestration and API retries under SLA constraints.',
-            tags: ['Django', 'FastAPI', 'React', 'TypeScript', 'Tailwind CSS', 'SLA']
+            summary: 'Architected a platform on Django, FastAPI, React, TypeScript and Tailwind CSS that automates file orchestration and API retries under SLA constraints, absorbing the workload of a full-time contractor so one engineer now runs it with a single upload and an end-of-day report.',
+            tags: ['Django', 'FastAPI', 'React', 'TypeScript', 'Tailwind CSS', 'Redis', 'SLA']
+        },
+        {
+            title: 'Analyst Console with Live Updates',
+            summary: 'Built the analyst UI for the automation platform: brand filters, policy search, selection with valid/invalid stats, 5-second live updates, and downloadable run reports plus manual staging batches for contractors without system access.',
+            tags: ['React', 'TypeScript', 'live polling', 'downloadable reports', 'filters']
         },
         {
             title: 'Top-N Analytics Feature',
@@ -140,8 +155,13 @@ export const contributionData = {
         },
         {
             title: 'Agent-Driven Validation Pipelines',
-            summary: 'Engineered step-strict automated validation pipelines for enterprise workflows, driven by custom AI agents inside internal chat platforms.',
-            tags: ['AI agents', 'validation pipelines', 'enterprise workflows']
+            summary: 'Engineered step-strict automated validation pipelines for enterprise workflows, driven by custom AI agents inside internal chat platforms. Combined negative prompts, few-shot prompting, spot-checks and output validation so analysts rely less on developers for report generation and verification.',
+            tags: ['AI agents', 'few-shot prompting', 'negative prompts', 'output validation', 'enterprise workflows']
+        },
+        {
+            title: 'In-House MCP Servers',
+            summary: 'Developed in-house MCP servers with PydanticAI and OpenAI / Anthropic LLMs, powering AI-driven analysis and reporting for business intelligence.',
+            tags: ['MCP', 'PydanticAI', 'OpenAI', 'Anthropic', 'business intelligence']
         },
         {
             title: 'AI Hackathon — Multi-Agent System',
@@ -173,6 +193,21 @@ export const contributionData = {
             tags: ['dependency management', 'cross-repo cleanup', 'maintainability']
         },
         {
+            title: 'Progressive Delivery on OpenShift',
+            summary: 'Practiced canary deployments on OpenShift (OCP) with Argo Rollouts and feature flags, weighing the trade-offs between rolling, blue-green and canary release strategies.',
+            tags: ['OpenShift', 'Argo Rollouts', 'canary', 'blue-green', 'feature flags']
+        },
+        {
+            title: 'Observability & Uptime',
+            summary: 'Resolved critical performance bottlenecks using Sentry monitoring, improving system uptime by 25%.',
+            tags: ['Sentry', 'performance profiling', 'uptime']
+        },
+        {
+            title: 'Deployment Pipelines',
+            summary: 'Managed CircleCI deployment pipelines to AWS EC2 and ECS with CloudWatch monitoring.',
+            tags: ['CircleCI', 'AWS ECS', 'EC2', 'CloudWatch']
+        },
+        {
             title: 'AI-Powered Test Coordinator Agent',
             summary: 'Architected a ~4,700-line pytest orchestrator with parallel batch execution, automated failure triage by root cause, real-time progress tracking, and structured test reports.',
             tags: ['multi-agent orchestration', 'parallel batch execution', 'automated triage', 'structured reporting']
@@ -195,6 +230,11 @@ export const contributionData = {
             title: 'Data Processing Toolkit',
             summary: 'Rebuilt the core data processing pipeline with email-based respondent filtering, duplicate detection, and multi-select header transformation. Added internationalisation support to normalise survey responses from non-English speakers (RU/JP/KR/FR) — stripping HTML tags from translated choice values and fuzzy-matching them back to canonical English labels for consistent analysis. Includes dry-run preview mode. Migrated tooling from pip to UV.',
             tags: ['ETL pipeline', 'duplicate detection', 'i18n normalisation', 'multilingual data', 'UV package management']
+        },
+        {
+            title: 'SurveyMonkey Parsing Automation',
+            summary: 'Automated SurveyMonkey data parsing pipelines, reducing manual processing time by 90%.',
+            tags: ['SurveyMonkey', 'data parsing', 'automation']
         }
     ]
 };
@@ -227,4 +267,15 @@ export const certData = [
         description: 'Comprehensive 23-hour course covering Docker, Kubernetes orchestration, and Swarm — taught by an official Docker Captain.',
         verifyUrl: 'https://www.udemy.com/certificate/UC-8f421066-4c61-4d88-8f09-f20ff5a63baf/'
     }
+];
+
+// Credentials listed on the resume with no issuer, date or verification link: rendered as a compact list, not cards.
+export const moreCertData = [
+    'Django Features and Libraries',
+    'Building Web Applications in Django',
+    'Web Application Technologies and Django',
+    'Certified Python Programmer',
+    'Learning C++',
+    'Learning Git and GitHub',
+    'Introduction to Industry 4.0 and Industrial IoT (IIT Kharagpur)'
 ];

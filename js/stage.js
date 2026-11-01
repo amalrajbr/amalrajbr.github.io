@@ -30,24 +30,116 @@ function gradientTexture(stops) {
     return tex;
 }
 
-function monogramTexture() {
-    const w = 1024, h = 672;
+// Top-face art for the plates. The art follows the context the stack is shown in: in the hero the three
+// layers read as the resume's tagline (Admin / Service / Platform), in the tooling showcase as the three
+// plugins (Code Review / Review Orchestration / Monitor Loop). Both sets are drawn once, then swapped in setMode.
+const DECAL_W = 1024, DECAL_H = 672;
+
+function decalTexture(draw) {
     const c = document.createElement('canvas');
-    c.width = w; c.height = h;
+    c.width = DECAL_W; c.height = DECAL_H;
     const g = c.getContext('2d');
-    const grad = g.createLinearGradient(0, 0, w, h);
-    grad.addColorStop(0, '#23252b');
-    grad.addColorStop(1, '#5d616d');
-    g.fillStyle = grad;
-    g.font = `800 440px ${FONT}`;
-    g.textAlign = 'center';
-    g.textBaseline = 'middle';
-    g.fillText('AR', w / 2, h / 2 + 24);
+    g.lineCap = 'round';
+    g.lineJoin = 'round';
+    draw(g, DECAL_W / 2, DECAL_H / 2);
     const tex = new THREE.CanvasTexture(c);
     tex.colorSpace = THREE.SRGBColorSpace;
     tex.anisotropy = 8;
     return tex;
 }
+
+function inkGradient(g, from, to) {
+    const grad = g.createLinearGradient(0, 0, DECAL_W, DECAL_H);
+    grad.addColorStop(0, from);
+    grad.addColorStop(1, to);
+    return grad;
+}
+
+// Draws a mark twice, a soft offset first and the ink on top, so it reads as cut into the plate rather than printed on it.
+function engrave(g, ink, edge, draw) {
+    g.save();
+    g.translate(4, 5);
+    g.strokeStyle = edge; g.fillStyle = edge;
+    draw();
+    g.restore();
+    g.strokeStyle = ink; g.fillStyle = ink;
+    draw();
+}
+
+const decals = {
+    hero: [
+        // Admin: the monogram, on the titanium plate
+        (g, cx, cy) => {
+            g.fillStyle = inkGradient(g, '#23252b', '#5d616d');
+            g.font = `800 440px ${FONT}`;
+            g.textAlign = 'center';
+            g.textBaseline = 'middle';
+            g.fillText('AR', cx, cy + 24);
+        },
+        // Service: an etched grid of endpoints on the glass
+        (g, cx, cy) => {
+            g.strokeStyle = 'rgba(94, 92, 230, .5)';
+            g.lineWidth = 3;
+            const cols = 5, rows = 4, gx = 150, gy = 120;
+            for (let i = 0; i < cols; i++) { const x = cx + (i - (cols - 1) / 2) * gx; g.beginPath(); g.moveTo(x, cy - 1.5 * gy); g.lineTo(x, cy + 1.5 * gy); g.stroke(); }
+            for (let j = 0; j < rows; j++) { const y = cy + (j - (rows - 1) / 2) * gy; g.beginPath(); g.moveTo(cx - 2 * gx, y); g.lineTo(cx + 2 * gx, y); g.stroke(); }
+            g.fillStyle = 'rgba(41, 151, 255, .85)';
+            [[1, 1], [3, 1], [2, 2], [0, 3], [4, 2]].forEach(([i, j]) => {
+                const x = cx + (i - 2) * gx, y = cy + (j - 1.5) * gy;
+                g.beginPath(); g.roundRect(x - 22, y - 22, 44, 44, 10); g.fill();
+            });
+        },
+        // Platform: a node cluster on the brand plate
+        (g, cx, cy) => {
+            const pts = [[-230, -110], [230, -110], [230, 110], [-230, 110]];
+            g.strokeStyle = 'rgba(255, 255, 255, .55)';
+            g.lineWidth = 4;
+            g.setLineDash([16, 14]);
+            g.beginPath(); pts.forEach(([x, y], i) => (i ? g.lineTo(cx + x, cy + y) : g.moveTo(cx + x, cy + y))); g.closePath(); g.stroke();
+            g.setLineDash([]);
+            pts.forEach(([x, y]) => { g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + x, cy + y); g.stroke(); });
+            g.fillStyle = '#fff';
+            pts.forEach(([x, y]) => { g.beginPath(); g.arc(cx + x, cy + y, 26, 0, Math.PI * 2); g.fill(); });
+            g.beginPath(); g.arc(cx, cy, 40, 0, Math.PI * 2); g.fill();
+        },
+    ],
+    showcase: [
+        // Code Review: code brackets with a check mark, engraved into the titanium
+        (g, cx, cy) => {
+            engrave(g, inkGradient(g, '#3b5bd6', '#7a4bd6'), 'rgba(255, 255, 255, .6)', () => {
+                g.lineWidth = 26;
+                g.beginPath(); g.moveTo(cx - 120, cy - 120); g.lineTo(cx - 250, cy); g.lineTo(cx - 120, cy + 120); g.stroke();
+                g.beginPath(); g.moveTo(cx + 120, cy - 120); g.lineTo(cx + 250, cy); g.lineTo(cx + 120, cy + 120); g.stroke();
+                g.lineWidth = 30;
+                g.beginPath(); g.moveTo(cx - 70, cy + 6); g.lineTo(cx - 14, cy + 66); g.lineTo(cx + 80, cy - 70); g.stroke();
+            });
+        },
+        // Review Orchestration: a conductor node routing work to three workers and taking it back
+        (g, cx, cy) => {
+            engrave(g, 'rgba(70, 64, 200, .85)', 'rgba(255, 255, 255, .55)', () => {
+                g.lineWidth = 12;
+                const hub = [cx, cy], workers = [[cx - 270, cy - 110], [cx + 270, cy - 110], [cx, cy + 165]];
+                workers.forEach(([x, y]) => { g.beginPath(); g.moveTo(hub[0], hub[1]); g.lineTo(x, y); g.stroke(); });
+                g.beginPath(); g.arc(cx, cy, 56, 0, Math.PI * 2); g.stroke();
+                g.beginPath(); g.arc(cx, cy, 20, 0, Math.PI * 2); g.fill();
+                workers.forEach(([x, y]) => { g.beginPath(); g.arc(x, y, 38, 0, Math.PI * 2); g.stroke(); g.beginPath(); g.arc(x, y, 13, 0, Math.PI * 2); g.fill(); });
+            });
+        },
+        // Monitor Loop: a ring that keeps turning, with a heartbeat inside
+        (g, cx, cy) => {
+            engrave(g, 'rgba(255, 255, 255, .95)', 'rgba(40, 40, 120, .25)', () => {
+                g.lineWidth = 16;
+                g.beginPath(); g.arc(cx, cy, 190, Math.PI * 0.15, Math.PI * 1.85); g.stroke();
+                const t = Math.PI * 1.85;
+                g.beginPath(); g.moveTo(cx + 190 * Math.cos(t) - 34, cy + 190 * Math.sin(t) - 38); g.lineTo(cx + 190 * Math.cos(t), cy + 190 * Math.sin(t)); g.lineTo(cx + 190 * Math.cos(t) + 42, cy + 190 * Math.sin(t) - 22); g.stroke();
+                g.lineWidth = 18;
+                g.beginPath();
+                [[-130, 0], [-60, 0], [-30, -80], [20, 90], [55, -30], [75, 0], [130, 0]].forEach(([x, y], i) => (i ? g.lineTo(cx + x, cy + y) : g.moveTo(cx + x, cy + y)));
+                g.stroke();
+            });
+        },
+    ],
+};
 
 function radialTexture() {
     const c = document.createElement('canvas');
@@ -144,13 +236,19 @@ export async function createStage({ onLost, onRestored } = {}) {
     const baseEmissive = [0, 0, 0.14];
     const plates = materials.map((mat) => { const m = new THREE.Mesh(geometry, mat); group.add(m); return m; });
 
-    const decal = new THREE.Mesh(
-        new THREE.PlaneGeometry(W * 0.7, D * 0.7),
-        new THREE.MeshBasicMaterial({ map: monogramTexture(), transparent: true, opacity: 0.94, toneMapped: false, depthWrite: false }),
-    );
-    decal.rotation.x = -Math.PI / 2;
-    decal.position.y = T / 2 + 0.003;
-    plates[0].add(decal);
+    // One decal per plate, its texture swapped with the mode. Transparent surfaces are sorted by renderOrder,
+    // not distance, so the stack reads bottom decal < glass < glass decal < top decal however the camera turns.
+    const decalTextures = { hero: decals.hero.map(decalTexture), showcase: decals.showcase.map(decalTexture) };
+    const decalMats = plates.map((plate, i) => {
+        const mat = new THREE.MeshBasicMaterial({ map: decalTextures.hero[i], transparent: true, opacity: 0.94, toneMapped: false, depthWrite: false });
+        const mesh = new THREE.Mesh(new THREE.PlaneGeometry(W * 0.7, D * 0.7), mat);
+        mesh.rotation.x = -Math.PI / 2;
+        mesh.position.y = T / 2 + 0.003;
+        mesh.renderOrder = [4, 3, 1][i];
+        plate.add(mesh);
+        return mat;
+    });
+    plates[1].renderOrder = 2;
 
     // Soft contact shadow on light backgrounds, blue floor glow on dark ones.
     const floorMat = new THREE.MeshBasicMaterial({ map: radialTexture(), transparent: true, depthWrite: false, toneMapped: false, color: 0x000000, opacity: 0.3 });
@@ -178,6 +276,7 @@ export async function createStage({ onLost, onRestored } = {}) {
         if (mode === next && !snap) return;
         if (mode !== next) idleAge = 0;
         mode = next;
+        decalMats.forEach((mat, i) => { mat.map = decalTextures[next][i]; mat.needsUpdate = true; });
         const dark = next === 'showcase';
         floorMat.color.set(dark ? 0x2f6bff : 0x000000);
         floorMat.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending;
@@ -263,7 +362,8 @@ export async function createStage({ onLost, onRestored } = {}) {
         plates.forEach((plate, i) => {
             const on = showing && input.step === i ? 1 : 0;
             S.active[i] = damp(S.active[i], on, 7 * k, dt);
-            plate.position.y = (1 - i) * spacing;
+            // A slow float, scaled by the separation so the plates never intersect while stacked.
+            plate.position.y = (1 - i) * spacing + Math.sin(t * 0.9 + i * 1.7) * 0.05 * S.explode;
             plate.position.x = S.active[i] * 0.16;
             plate.rotation.y = (i - 1) * 0.2 * S.explode;
             materials[i].emissiveIntensity = baseEmissive[i] + S.active[i] * [0.28, 0.7, 0.45][i];

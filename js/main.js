@@ -1,7 +1,7 @@
 // Page behaviour: nav, content rendering, scroll reveal, pinned-section progress and the
 // lazy 3D stage. No bare module specifiers here on purpose: if import maps are unsupported
 // the page still works and the CSS stand-in for the 3D stack is shown.
-import { contributionData, certData } from './data.js';
+import { contributionData, certData, moreCertData } from './data.js';
 
 const root = document.documentElement;
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
@@ -55,7 +55,7 @@ const sectionObserver = new IntersectionObserver((entries) => {
     });
 }, { rootMargin: '-50% 0px -50% 0px' });
 // The hero and the contact block have no link of their own: observed so that reaching them clears the mark.
-['top', 'overview', 'admin-tooling', 'tools', 'experience', 'stack', 'awards', 'contact'].forEach((id) => { const el = document.getElementById(id); if (el) sectionObserver.observe(el); });
+['top', 'overview', 'admin-tooling', 'tools', 'career', 'experience', 'stack', 'awards', 'contact'].forEach((id) => { const el = document.getElementById(id); if (el) sectionObserver.observe(el); });
 
 /* ------------------------------------------------------ content: cards + certs */
 // Keeps the card grid gapless on a 3-column layout (2-column and 1-column stay gapless anyway).
@@ -92,8 +92,9 @@ function renderCerts() {
                 <p class="cert-desc">${esc(c.description)}</p>
                 ${c.verifyUrl ? `<a class="link-arrow" href="${esc(c.verifyUrl)}" target="_blank" rel="noopener">Verify certificate</a>` : ''}
             </div>
-        </article>`).join('') + '</div>';
-    $('#tab-certs .count').textContent = certData.length;
+        </article>`).join('') + '</div>'
+        + `<div class="cert-more" data-reveal><h3>Also completed</h3><ul class="tags">${moreCertData.map((t) => `<li>${esc(t)}</li>`).join('')}</ul></div>`;
+    $('#tab-certs .count').textContent = certData.length + moreCertData.length;
 }
 
 Object.keys(contributionData).forEach(renderCards);
