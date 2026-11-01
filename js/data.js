@@ -169,9 +169,9 @@ export const contributionData = {
             tags: ['PydanticAI', 'MCP', 'graph routing', 'Django Ninja', 'Mermaid']
         },
         {
-            title: 'AI Agent Skill Plugins',
-            summary: 'Designed 3 developer workflow plugins for Claude Code and OpenAI Codex — analytics audit with P0–P3 severity tagging, login attribution implementation guide, and an interactive code review processor with dry-run and auto-fix modes.',
-            tags: ['Claude Code', 'OpenAI Codex', 'severity-tagged audit', 'interactive CLI']
+            title: 'Claude Code Plugin Marketplace',
+            summary: 'Built three plugins in a private Claude Code marketplace: a whole-branch antipattern audit verified through a test, browser and datastore ladder (Elixir/Phoenix and Django adapters), a review-and-fix loop that pairs persistent reviewer and developer agents from an issue, PR, plan or branch, and an hourly in-session heartbeat that keeps long runs alive through rate-limit pauses.',
+            tags: ['Claude Code', 'agent teams', 'CronCreate', 'Playwright MCP', 'antipattern catalogue']
         },
         {
             title: 'MCP / RAG Prototype',

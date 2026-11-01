@@ -261,39 +261,40 @@
                 <div class="visual" data-mount="showcase" aria-hidden="true">
                     <div class="stack-fallback"><i></i><i></i><i></i></div>
                 </div>
-                <ul class="callouts" aria-hidden="true">
-                    <li class="callout" data-i="0"><b>01</b> Code Review</li>
-                    <li class="callout" data-i="1"><b>02</b> Review Orchestration</li>
-                    <li class="callout" data-i="2"><b>03</b> Monitor Loop</li>
+                <ul class="callouts">
+                    <li class="callout" data-i="0"><button type="button">Code Review</button></li>
+                    <li class="callout" data-i="1"><button type="button">Review Orchestration</button></li>
+                    <li class="callout" data-i="2"><button type="button">Monitor Loop</button></li>
                 </ul>
                 <div class="showcase-copy">
                     <header class="showcase-head">
                         <p class="eyebrow" data-reveal>Claude Code plugins</p>
                         <h2 class="section-title" id="tools-title" data-reveal style="--i:1">Built to build.</h2>
-                        <p class="lede" data-reveal style="--i:2">Three Claude Code plugins I wrote for my own workflow. They review the work, fix it, and keep a long run moving while I do something else.</p>
+                        <p class="lede" data-reveal style="--i:2">Three Claude Code plugins I wrote and keep in a private marketplace. They audit the work, run the review-and-fix loop, and keep a long run moving while I do something else.</p>
                     </header>
                     <ol class="steps">
                         <li class="step" data-i="0">
-                            <p class="step-kicker"><span>01</span> Code Review</p>
-                            <h3>Reviews the whole branch, not just the diff.</h3>
-                            <p>Checks your code against an antipattern catalogue mined from your repository's own bug-fix history, and verifies each finding before reporting it. You get a clear verdict, and anything it could not verify is labelled as such.</p>
-                            <ul class="chips"><li>Elixir / Phoenix</li><li>Django</li><li>Learns from your bug history</li></ul>
+                            <p class="step-kicker">Code Review</p>
+                            <h3>Audits the whole branch, not just the diff.</h3>
+                            <p>Checks your code against an antipattern catalogue owned by your repository and mined from its own bug-fix history, then proves each candidate before reporting it: with a test, a browser check, or a live datastore query. Anything it could not verify is labelled as such.</p>
+                            <ul class="chips"><li>Elixir / Phoenix</li><li>Django, DRF, Ninja</li><li>Test, browser and datastore checks</li></ul>
                         </li>
                         <li class="step" data-i="1">
-                            <p class="step-kicker"><span>02</span> Review Orchestration</p>
-                            <h3>From issue to approved PR, round by round.</h3>
-                            <p>A reviewer and a developer work as a persistent pair, starting from a GitHub issue, a pull request, a plan file or your current branch. They review, fix and re-review until every unit of work passes, leaving a written record of each round.</p>
-                            <ul class="chips"><li>Issues and pull requests</li><li>Versioned review trail</li><li>Reports back on the issue or PR</li></ul>
+                            <p class="step-kicker">Review Orchestration</p>
+                            <h3>From issue to a passing review, round by round.</h3>
+                            <p>Starts from a GitHub issue, a pull request, a plan file or your current branch. A triage pass extracts the acceptance criteria, then a persistent reviewer and developer pair work one unit at a time, writing a versioned review doc each round until every unit passes. It reports back on the issue or PR.</p>
+                            <ul class="chips"><li>Issue, PR, plan or branch</li><li>Versioned review trail</li><li>Recovers a round if a teammate drops</li></ul>
                         </li>
                         <li class="step" data-i="2">
-                            <p class="step-kicker"><span>03</span> Monitor Loop</p>
+                            <p class="step-kicker">Monitor Loop</p>
                             <h3>Long runs that don't stall.</h3>
-                            <p>Keeps a multi-hour agent run moving. It notices when a teammate has gone quiet, nudges it, recognizes when the work is done, and keeps going through rate-limit pauses while the session stays open.</p>
-                            <ul class="chips"><li>Stall detection</li><li>Rate-limit tolerant</li><li>Hands off when done</li></ul>
+                            <p>Arms an hourly heartbeat inside your session for multi-hour agent runs. It notices a teammate that has gone quiet and nudges it, detects when the work is done, and carries on after a rate-limit pause for as long as the session stays open.</p>
+                            <ul class="chips"><li>Hourly heartbeat</li><li>Stall detection</li><li>Survives rate-limit pauses</li></ul>
                         </li>
                     </ol>
                 </div>
-                <p class="scroll-hint" aria-hidden="true">Keep scrolling</p>
+                <button class="stage-nav up" id="stage-prev" type="button" aria-label="Previous section"><svg class="icon" aria-hidden="true"><use href="#i-up"/></svg></button>
+                <button class="stage-nav down" id="stage-next" type="button" aria-label="Next section"><svg class="icon" aria-hidden="true"><use href="#i-up"/></svg></button>
             </div>
             </div>
             <div class="wrap showcase-outro">

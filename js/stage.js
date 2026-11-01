@@ -238,7 +238,8 @@ export async function createStage({ onLost, onRestored } = {}) {
 
     // One decal per plate, its texture swapped with the mode. Transparent surfaces are sorted by renderOrder,
     // not distance, so the stack reads bottom decal < glass < glass decal < top decal however the camera turns.
-    const decalTextures = { hero: decals.hero.map(decalTexture), showcase: decals.showcase.map(decalTexture) };
+    // Only the hero set is drawn up front; the showcase set is drawn the first time that mode is shown, keeping startup short.
+    const decalTextures = { hero: decals.hero.map(decalTexture), showcase: null };
     const decalMats = plates.map((plate, i) => {
         const mat = new THREE.MeshBasicMaterial({ map: decalTextures.hero[i], transparent: true, opacity: 0.94, toneMapped: false, depthWrite: false });
         const mesh = new THREE.Mesh(new THREE.PlaneGeometry(W * 0.7, D * 0.7), mat);
@@ -276,6 +277,7 @@ export async function createStage({ onLost, onRestored } = {}) {
         if (mode === next && !snap) return;
         if (mode !== next) idleAge = 0;
         mode = next;
+        if (!decalTextures[next]) decalTextures[next] = decals[next].map(decalTexture);
         decalMats.forEach((mat, i) => { mat.map = decalTextures[next][i]; mat.needsUpdate = true; });
         const dark = next === 'showcase';
         floorMat.color.set(dark ? 0x2f6bff : 0x000000);
@@ -416,6 +418,11 @@ export async function createStage({ onLost, onRestored } = {}) {
     }
     function resume() { if (running || lost) return; running = true; last = 0; raf = requestAnimationFrame(frame); }
     function pause() { running = false; cancelAnimationFrame(raf); }
+
+    // Compile the shaders off the main thread (where the browser supports parallel compile) so the first
+    // rendered frame does not stall the page while the CSS stack is still showing.
+    // Capped at 1.5 s: if a browser never settles this, the stage must still start (the first render compiles instead).
+    try { await Promise.race([renderer.compileAsync(scene, camera), new Promise((r) => setTimeout(r, 1500))]); } catch (err) { /* first render compiles instead */ }
 
     return {
         canvas,

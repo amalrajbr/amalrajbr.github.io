@@ -302,15 +302,11 @@ svg, canvas { display: block; }
 .showcase-head .lede { margin-top: 18px; max-width: 560px; }
 .showcase .visual { position: relative; inset: auto; order: 2; height: 380px; margin: 8px 0 -8px; }
 .showcase .stack-fallback { --fb-top: 52%; --sep: 64px; width: min(70vw, 400px); }
-.callouts, .scroll-hint { display: none; }
+.callouts, .stage-nav { display: none; }
 
 .steps { display: grid; gap: 16px; margin-top: 24px; }
 .step { background: #111113; border: 1px solid rgba(255, 255, 255, .08); border-radius: 28px; padding: 28px; }
 .step-kicker { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; letter-spacing: -.01em; color: var(--on-dark-2); }
-.step-kicker span {
-    font-size: 12px; padding: 2px 8px; border-radius: 999px;
-    background: rgba(255, 255, 255, .1); color: var(--on-dark);
-}
 .step h3 { margin-top: 14px; font-size: clamp(24px, 2.6vw, 34px); line-height: 1.1; font-weight: 700; letter-spacing: -.035em; }
 .step > p:not(.step-kicker) { margin-top: 12px; font-size: 17px; line-height: 1.45; color: var(--on-dark-2); }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
@@ -351,34 +347,36 @@ svg, canvas { display: block; }
     transition: opacity .6s var(--ease), transform .7s var(--ease);
 }
 .scrolly .step.is-active { opacity: 1; transform: none; pointer-events: auto; }
-.scrolly .scroll-hint {
-    display: block; position: absolute; z-index: 3; left: 0; right: 0; bottom: calc(28px + env(safe-area-inset-bottom));
-    text-align: center; font-size: 13px; font-weight: 500; letter-spacing: .04em; color: var(--on-dark-2);
-    transition: opacity .4s;
+/* Previous / next section controls, top and bottom of the pinned screen. */
+.scrolly .stage-nav {
+    display: grid; place-items: center; position: absolute; z-index: 4; left: 50%; margin-left: -22px;
+    width: 44px; height: 44px; border-radius: 50%;
+    color: var(--on-dark); background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .16);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    transition: background .3s, color .3s, transform .3s var(--ease);
 }
-.scrolly .scroll-hint::after {
-    content: ""; display: block; width: 7px; height: 7px; margin: 10px auto 0;
-    border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg);
-}
-/* Two nudges (3.6s) each time the section is pinned, then it rests: nothing keeps moving on its own. */
-.scrolly .is-pinned .scroll-hint::after { animation: hint 1.8s var(--ease) 2; }
-@keyframes hint { 0%, 100% { transform: translateY(0) rotate(45deg); opacity: .4; } 50% { transform: translateY(5px) rotate(45deg); opacity: 1; } }
-.scrolly .has-step .scroll-hint { opacity: 0; }
+.scrolly .stage-nav:hover { background: #f5f5f7; color: #000; }
+.scrolly .stage-nav.up { top: calc(var(--nav-h) + 14px); }
+.scrolly .stage-nav.down { bottom: calc(22px + env(safe-area-inset-bottom)); }
+.scrolly .stage-nav.down .icon { transform: rotate(180deg); }
 .scrolly .callouts { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none; }
 .callout {
     position: absolute; left: 0; top: 0; display: none; align-items: center; gap: 8px;
     transform: translate3d(var(--x, -999px), var(--y, -999px), 0);
-    padding: 7px 13px 7px 8px; border-radius: 999px; font-size: 13px; font-weight: 500; white-space: nowrap;
+    padding: 0; border-radius: 999px; font-size: 13px; font-weight: 500; white-space: nowrap;
     color: var(--on-dark); background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .16);
     -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
     transition: background .4s, color .4s, border-color .4s, opacity .5s;
     opacity: 0;
 }
-.callout b { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 999px; background: rgba(255, 255, 255, .14); }
 .callout.is-active { background: #f5f5f7; color: #000; border-color: transparent; }
-.callout.is-active b { background: rgba(0, 0, 0, .1); }
-.webgl .callout { display: inline-flex; }
-.webgl .has-step .callout, .webgl .callouts.on .callout { opacity: 1; }
+.callout button {
+    display: block; padding: 8px 16px; border-radius: inherit; font: inherit; color: inherit; letter-spacing: inherit; cursor: pointer;
+}
+.webgl .callout { display: inline-flex; visibility: hidden; transition: background .4s, color .4s, border-color .4s, opacity .5s, visibility 0s linear .5s; }
+.webgl .has-step .callout, .webgl .callouts.on .callout { opacity: 1; visibility: visible; transition-delay: 0s; }
+.webgl .callout:hover:not(.is-active) { background: rgba(255, 255, 255, .2); }
+.webgl .has-step .callout button, .webgl .callouts.on .callout button { pointer-events: auto; }
 
 /* ---------- career timeline ---------- */
 .career { background: var(--bg); padding: clamp(80px, 12vw, 168px) 0; }
@@ -660,6 +658,9 @@ html:not(.js) .tabs-bar, html:not(.js) .panel, html:not(.js) .menu-btn { display
         padding-bottom: calc(26px + env(safe-area-inset-bottom));
     }
     .scrolly .callouts { display: none; }
+    .scrolly .stage-nav { left: auto; margin-left: 0; right: var(--gutter); width: 40px; height: 40px; }
+    .scrolly .stage-nav.up { top: calc(var(--nav-h) + 10px); }
+    .scrolly .stage-nav.down { bottom: auto; top: calc(var(--nav-h) + 58px); }
     .hero .stack-fallback { --fb-top: 74%; width: min(80vw, 360px); }
 }
 @media (max-width: 734px) and (max-height: 720px), (max-aspect-ratio: 21/20) and (max-height: 720px) {

@@ -211,10 +211,36 @@ const toolsSection = $('#tools');
 const awardsSection = $('#awards');
 const steps = $$('.step');
 const callouts = $$('.callout');
+const stagePrev = $('#stage-prev');
+const stageNext = $('#stage-next');
 const calloutBox = $('.callouts');
 
 const STEP_START = 0.3; // before this the plates are still separating
 const stepFor = (p) => (p < STEP_START ? -1 : Math.min(steps.length - 1, Math.floor((p - STEP_START) / ((1 - STEP_START) / steps.length))));
+
+// Scroll to the middle of a step's stretch of the pinned section (-1 = the intro, before any step is shown).
+function scrollToStep(i) {
+    const span = showcaseTrack.offsetHeight - showcaseStageEl.offsetHeight;
+    const p = i < 0 ? 0.1 : STEP_START + (i + 0.5) * ((1 - STEP_START) / steps.length);
+    scrollTo({ top: showcaseTrack.getBoundingClientRect().top + scrollY + span * p, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+}
+const scrollToSection = (id) => scrollTo({ top: document.getElementById(id).getBoundingClientRect().top + scrollY, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+const stepTitles = steps.map((el) => $('.step-kicker', el).textContent.trim());
+// Previous / next move through the intro and the steps, then on to the neighbouring page sections.
+const PREV_SECTION = { id: 'admin-tooling', label: 'Admin Tooling' };
+const NEXT_SECTION = { id: 'career', label: 'Career' };
+function stageTargets(step) {
+    return {
+        prev: step < 0 ? { label: PREV_SECTION.label, go: () => scrollToSection(PREV_SECTION.id) }
+            : { label: step === 0 ? 'Overview' : stepTitles[step - 1], go: () => scrollToStep(step - 1) },
+        next: step >= steps.length - 1 ? { label: NEXT_SECTION.label, go: () => scrollToSection(NEXT_SECTION.id) }
+            : { label: stepTitles[step + 1], go: () => scrollToStep(step + 1) },
+    };
+}
+let targets = stageTargets(-1);
+stagePrev.addEventListener('click', () => targets.prev.go());
+stageNext.addEventListener('click', () => targets.next.go());
+callouts.forEach((el, i) => $('button', el).addEventListener('click', () => scrollToStep(i)));
 
 function trackProgress(track, stageEl) {
     const span = track.offsetHeight - stageEl.offsetHeight;
@@ -250,10 +276,11 @@ function update() {
         steps.forEach((el, i) => el.classList.toggle('is-active', i === step));
         callouts.forEach((el, i) => el.classList.toggle('is-active', i === step));
         showcaseStageEl.classList.toggle('has-step', step >= 0);
+        targets = stageTargets(step);
+        stagePrev.setAttribute('aria-label', 'Previous: ' + targets.prev.label);
+        stageNext.setAttribute('aria-label', 'Next: ' + targets.next.label);
     }
     calloutBox.classList.toggle('on', showP > 0.16);
-    // The "Keep scrolling" chevron only animates (a few times) while the section is pinned on screen.
-    showcaseStageEl.classList.toggle('is-pinned', showP > 0 && showP < 1);
     if (stage3d) {
         // offsetTop/offsetHeight ignore the scroll-driven transform on .hero-copy.
         const heroLayout = { bottom: heroCopyEl.offsetTop + heroCopyEl.offsetHeight, h: heroStageEl.offsetHeight };
