@@ -205,6 +205,7 @@ $$('[data-count]').forEach((el) => {
 const heroEl = $('[data-track="hero"]');
 const heroStageEl = $('.hero-stage');
 const heroCopyEl = $('.hero-copy');
+const heroFallbackEl = $('.hero .stack-fallback');
 const showcaseTrack = $('[data-track="showcase"]');
 const showcaseStageEl = $('.showcase-stage');
 const toolsSection = $('#tools');
@@ -281,9 +282,14 @@ function update() {
         stageNext.setAttribute('aria-label', 'Next: ' + targets.next.label);
     }
     calloutBox.classList.toggle('on', showP > 0.16);
+    // offsetTop/offsetHeight ignore the scroll-driven transform on .hero-copy.
+    const heroLayout = { bottom: heroCopyEl.offsetTop + heroCopyEl.offsetHeight, h: heroStageEl.offsetHeight };
+    // The CSS stand-in for the plates is placed in the same free space under the copy as the 3D slab (see targets() in
+    // stage.js), so a taller intro never sits on top of it.
+    const freeH = Math.max(160, heroLayout.h - heroLayout.bottom - 28);
+    heroFallbackEl.style.top = ((heroLayout.bottom + 10 + freeH * 0.46) / heroLayout.h * 100).toFixed(2) + '%';
+    heroFallbackEl.style.width = Math.min(innerWidth * (stackedMQ.matches ? 0.8 : 0.48), freeH * 1.5, 440).toFixed(0) + 'px';
     if (stage3d) {
-        // offsetTop/offsetHeight ignore the scroll-driven transform on .hero-copy.
-        const heroLayout = { bottom: heroCopyEl.offsetTop + heroCopyEl.offsetHeight, h: heroStageEl.offsetHeight };
         stage3d.update({ hero: heroP, showcase: showP, step, heroLayout, stacked: stackedMQ.matches });
     }
 }
@@ -357,6 +363,8 @@ document.addEventListener('visibilitychange', () => {
     if (document.hidden) stage3d.pause(); else syncStage();
 });
 
+// The intro's height changes when the web font arrives or the text re-wraps: re-place the plates under it.
+new ResizeObserver(requestUpdate).observe(heroCopyEl);
 requestUpdate();
 
 // Tells the inline head script that the page booted; if this never runs it restores the plain layout.
