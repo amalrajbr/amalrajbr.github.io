@@ -202,10 +202,6 @@ $$('[data-count]').forEach((el) => {
 });
 
 /* ------------------------------------------- scroll engine (pinned sections) */
-const heroEl = $('[data-track="hero"]');
-const heroStageEl = $('.hero-stage');
-const heroCopyEl = $('.hero-copy');
-const heroFallbackEl = $('.hero .stack-fallback');
 const showcaseTrack = $('[data-track="showcase"]');
 const showcaseStageEl = $('.showcase-stage');
 const toolsSection = $('#tools');
@@ -263,11 +259,7 @@ function update() {
     updateScrub();
 
     const scrolly = root.classList.contains('scrolly');
-    const heroP = scrolly ? trackProgress(heroEl, heroStageEl) : 0;
     const showP = scrolly ? trackProgress(showcaseTrack, showcaseStageEl) : 0;
-    heroEl.style.setProperty('--p', heroP.toFixed(4));
-    // The copy's opacity reaches 0 at heroP of about 0.556; from there its links must not take focus or clicks.
-    heroCopyEl.classList.toggle('is-gone', heroP >= 0.55);
     // The back-to-top button would sit on the pinned 3D stage and its copy.
     toTop.classList.toggle('visible', sy > 700 && !(scrolly && showP > 0 && showP < 1));
 
@@ -282,15 +274,8 @@ function update() {
         stageNext.setAttribute('aria-label', 'Next: ' + targets.next.label);
     }
     calloutBox.classList.toggle('on', showP > 0.16);
-    // offsetTop/offsetHeight ignore the scroll-driven transform on .hero-copy.
-    const heroLayout = { bottom: heroCopyEl.offsetTop + heroCopyEl.offsetHeight, h: heroStageEl.offsetHeight };
-    // The CSS stand-in for the plates is placed in the same free space under the copy as the 3D slab (see targets() in
-    // stage.js), so a taller intro never sits on top of it.
-    const freeH = Math.max(160, heroLayout.h - heroLayout.bottom - 28);
-    heroFallbackEl.style.top = ((heroLayout.bottom + 10 + freeH * 0.46) / heroLayout.h * 100).toFixed(2) + '%';
-    heroFallbackEl.style.width = Math.min(innerWidth * (stackedMQ.matches ? 0.8 : 0.48), freeH * 1.5, 440).toFixed(0) + 'px';
     if (stage3d) {
-        stage3d.update({ hero: heroP, showcase: showP, step, heroLayout, stacked: stackedMQ.matches });
+        stage3d.update({ showcase: showP, step, stacked: stackedMQ.matches });
     }
 }
 function requestUpdate() {
@@ -309,7 +294,7 @@ onChange(reduceMotion, () => {
 });
 
 /* --------------------------------------------------------------- 3D stage */
-const mounts = { hero: $('[data-mount="hero"]'), showcase: $('[data-mount="showcase"]') };
+const mounts = { showcase: $('[data-mount="showcase"]') };
 const visibility = new Map();
 let stageFailed = false;
 let contextLost = false; // a lost WebGL context may be restored: keep the stage object, show the CSS stack meanwhile
@@ -363,8 +348,6 @@ document.addEventListener('visibilitychange', () => {
     if (document.hidden) stage3d.pause(); else syncStage();
 });
 
-// The intro's height changes when the web font arrives or the text re-wraps: re-place the plates under it.
-new ResizeObserver(requestUpdate).observe(heroCopyEl);
 requestUpdate();
 
 // Tells the inline head script that the page booted; if this never runs it restores the plain layout.

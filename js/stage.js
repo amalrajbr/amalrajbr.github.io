@@ -1,5 +1,4 @@
-// The 3D stage: one renderer, one canvas, three layered plates. The canvas is moved between the
-// hero and the tooling showcase, so only one WebGL context ever exists. Everything is procedural
+// The 3D stage: one renderer, one canvas, three layered plates for the tooling showcase. Everything is procedural
 // (no model files, no HDR): reflections come from three's RoomEnvironment.
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
@@ -14,7 +13,6 @@ const damp = (cur, target, rate, dt) => lerp(cur, target, clamp(1 - Math.exp(-ra
 // Plate geometry, in world units.
 const W = 3.2, T = 0.16, D = 2.1;
 const FOV = 26, CAM_Z = 11;
-const FONT = '-apple-system, "SF Pro Display", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif';
 
 function gradientTexture(stops) {
     const c = document.createElement('canvas');
@@ -30,9 +28,7 @@ function gradientTexture(stops) {
     return tex;
 }
 
-// Top-face art for the plates. The art follows the context the stack is shown in: in the hero the three
-// layers read as the resume's tagline (Admin / Service / Platform), in the tooling showcase as the three
-// plugins (Code Review / Review Orchestration / Monitor Loop). Both sets are drawn once, then swapped in setMode.
+// Top-face art for the plates: the three plugins, top to bottom (Code Review / Review Orchestration / Monitor Loop).
 const DECAL_W = 1024, DECAL_H = 672;
 
 function decalTexture(draw) {
@@ -67,42 +63,6 @@ function engrave(g, ink, edge, draw) {
 }
 
 const decals = {
-    hero: [
-        // Admin: the monogram, on the titanium plate
-        (g, cx, cy) => {
-            g.fillStyle = inkGradient(g, '#23252b', '#5d616d');
-            g.font = `800 440px ${FONT}`;
-            g.textAlign = 'center';
-            g.textBaseline = 'middle';
-            g.fillText('AR', cx, cy + 24);
-        },
-        // Service: an etched grid of endpoints on the glass
-        (g, cx, cy) => {
-            g.strokeStyle = 'rgba(94, 92, 230, .5)';
-            g.lineWidth = 3;
-            const cols = 5, rows = 4, gx = 150, gy = 120;
-            for (let i = 0; i < cols; i++) { const x = cx + (i - (cols - 1) / 2) * gx; g.beginPath(); g.moveTo(x, cy - 1.5 * gy); g.lineTo(x, cy + 1.5 * gy); g.stroke(); }
-            for (let j = 0; j < rows; j++) { const y = cy + (j - (rows - 1) / 2) * gy; g.beginPath(); g.moveTo(cx - 2 * gx, y); g.lineTo(cx + 2 * gx, y); g.stroke(); }
-            g.fillStyle = 'rgba(41, 151, 255, .85)';
-            [[1, 1], [3, 1], [2, 2], [0, 3], [4, 2]].forEach(([i, j]) => {
-                const x = cx + (i - 2) * gx, y = cy + (j - 1.5) * gy;
-                g.beginPath(); g.roundRect(x - 22, y - 22, 44, 44, 10); g.fill();
-            });
-        },
-        // Platform: a node cluster on the brand plate
-        (g, cx, cy) => {
-            const pts = [[-230, -110], [230, -110], [230, 110], [-230, 110]];
-            g.strokeStyle = 'rgba(255, 255, 255, .55)';
-            g.lineWidth = 4;
-            g.setLineDash([16, 14]);
-            g.beginPath(); pts.forEach(([x, y], i) => (i ? g.lineTo(cx + x, cy + y) : g.moveTo(cx + x, cy + y))); g.closePath(); g.stroke();
-            g.setLineDash([]);
-            pts.forEach(([x, y]) => { g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + x, cy + y); g.stroke(); });
-            g.fillStyle = '#fff';
-            pts.forEach(([x, y]) => { g.beginPath(); g.arc(cx + x, cy + y, 26, 0, Math.PI * 2); g.fill(); });
-            g.beginPath(); g.arc(cx, cy, 40, 0, Math.PI * 2); g.fill();
-        },
-    ],
     showcase: [
         // Code Review: code brackets with a check mark, engraved into the titanium
         (g, cx, cy) => {
@@ -238,10 +198,9 @@ export async function createStage({ onLost, onRestored } = {}) {
 
     // One decal per plate, its texture swapped with the mode. Transparent surfaces are sorted by renderOrder,
     // not distance, so the stack reads bottom decal < glass < glass decal < top decal however the camera turns.
-    // Only the hero set is drawn up front; the showcase set is drawn the first time that mode is shown, keeping startup short.
-    const decalTextures = { hero: decals.hero.map(decalTexture), showcase: null };
+    const decalTextures = { showcase: decals.showcase.map(decalTexture) };
     const decalMats = plates.map((plate, i) => {
-        const mat = new THREE.MeshBasicMaterial({ map: decalTextures.hero[i], transparent: true, opacity: 0.94, toneMapped: false, depthWrite: false });
+        const mat = new THREE.MeshBasicMaterial({ map: decalTextures.showcase[i], transparent: true, opacity: 0.94, toneMapped: false, depthWrite: false });
         const mesh = new THREE.Mesh(new THREE.PlaneGeometry(W * 0.7, D * 0.7), mat);
         mesh.rotation.x = -Math.PI / 2;
         mesh.position.y = T / 2 + 0.003;
@@ -258,13 +217,12 @@ export async function createStage({ onLost, onRestored } = {}) {
     scene.add(floor);
 
     /* ---- state ---- */
-    const S = { rotY: 0, rotX: 0.4, explode: 0, scale: 1, posX: 0, posY: 0, active: new Float32Array(3), pointerX: 0, pointerY: 0 };
+    const S = { rotY: 0, rotX: 0.4, explode: 0, scale: 1, posX: 0, posY: 0, active: new Float32Array(3) };
     // `stacked` mirrors the page's own layout switch (see STACKED_QUERY in main.js and the stacked
     // block in styles.css). The canvas aspect cannot stand in for it: in the stacked arrangement the
     // canvas is only the top part of the stage.
-    const input = { hero: 0, showcase: 0, step: -1, stacked: false };
-    const pointer = { x: 0, y: 0 };
-    let mode = 'hero';
+    const input = { showcase: 0, step: -1, stacked: false };
+    let mode = 'showcase';
     let mount = null;
     let calloutEls = [];
     let calloutW = []; // pill widths in px, measured on show/resize (0 = not measured or not displayed)
@@ -277,8 +235,6 @@ export async function createStage({ onLost, onRestored } = {}) {
         if (mode === next && !snap) return;
         if (mode !== next) idleAge = 0;
         mode = next;
-        if (!decalTextures[next]) decalTextures[next] = decals[next].map(decalTexture);
-        decalMats.forEach((mat, i) => { mat.map = decalTextures[next][i]; mat.needsUpdate = true; });
         const dark = next === 'showcase';
         floorMat.color.set(dark ? 0x2f6bff : 0x000000);
         floorMat.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending;
@@ -300,14 +256,6 @@ export async function createStage({ onLost, onRestored } = {}) {
     }
     const resizeObserver = new ResizeObserver(resize);
 
-    // Fine pointers get a gentle parallax on the hero.
-    if (matchMedia('(pointer: fine)').matches) {
-        addEventListener('pointermove', (e) => {
-            pointer.x = (e.clientX / innerWidth) * 2 - 1;
-            pointer.y = (e.clientY / innerHeight) * 2 - 1;
-        }, { passive: true });
-    }
-
     function targets(t) {
         const visH = 2 * CAM_Z * Math.tan((FOV * Math.PI) / 360);
         const visW = visH * camera.aspect;
@@ -315,23 +263,6 @@ export async function createStage({ onLost, onRestored } = {}) {
         const pxPerWorld = height / visH;
         const idle = Math.sin(t * 0.45) * idleAmplitude(idleAge);
 
-        if (mode === 'hero') {
-            const p = input.hero;
-            // Fit the slab into the free space under the hero copy (px, measured by the page).
-            const L = input.heroLayout || { bottom: height * 0.55, h: height };
-            const availH = Math.max(160, L.h - L.bottom - 28);
-            const centreFrac = (L.bottom + 10 + availH * 0.46) / L.h; // where the slab sits at rest, 0 = top
-            const targetPx = Math.min(width * (wide ? 0.48 : 0.84), availH * 1.5, 680);
-            const fit = clamp(targetPx / pxPerWorld / 3.9, 0.35, 1.4);
-            return {
-                rotY: -0.55 + idle * 0.22 + pointer.x * 0.32 + p * 2.3,
-                rotX: 0.42 - p * 0.14 + pointer.y * 0.08,
-                explode: smooth(0.1, 0.95, p) * 0.4,
-                scale: fit * (1 + p * 0.5),
-                posX: 0,
-                posY: lerp((0.5 - centreFrac) * visH, 0, smooth(0, 0.95, p)),
-            };
-        }
         const targetPx = Math.min(width * (wide ? 0.4 : 0.8), 560);
         const fit = clamp(targetPx / pxPerWorld / 3.9, 0.4, 1.2);
         const p = input.showcase;
