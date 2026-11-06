@@ -1,5 +1,5 @@
 // Page behaviour: nav, content rendering, scroll reveal and the pinned plugins section.
-import { contributionData, certData, moreCertData } from './data.js';
+import { contributionData, certData, moreCertData } from './data.js?v=20261106a';
 
 const root = document.documentElement;
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
