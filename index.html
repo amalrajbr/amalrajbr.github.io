@@ -25,9 +25,6 @@
             });
         })();
     </script>
-    <script type="importmap">
-        { "imports": { "three": "./vendor/three/three.module.min.js", "three/addons/": "./vendor/three/addons/" } }
-    </script>
     <link rel="stylesheet" href="css/styles.css">
     <script type="module" src="js/main.js"></script>
 </head>
@@ -332,14 +329,73 @@
         <section class="showcase" id="tools" data-theme="dark" aria-labelledby="tools-title">
             <div class="showcase-track" data-track="showcase">
             <div class="showcase-stage">
-                <div class="visual" data-mount="showcase" aria-hidden="true">
-                    <div class="stack-fallback"><i></i><i></i><i></i></div>
+                <div class="visual">
+                    <div class="plates">
+                        <svg viewBox="0 0 680 540" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                            <defs>
+                                <linearGradient id="pTitanium" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#f1f3f7"/><stop offset=".5" stop-color="#c9ccd4"/><stop offset="1" stop-color="#eceef2"/>
+                                </linearGradient>
+                                <linearGradient id="pGlass" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#ffffff" stop-opacity=".34"/><stop offset="1" stop-color="#8fb4ff" stop-opacity=".16"/>
+                                </linearGradient>
+                                <linearGradient id="pBrand" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#2997ff"/><stop offset=".55" stop-color="#5e5ce6"/><stop offset="1" stop-color="#bf5af2"/>
+                                </linearGradient>
+                                <linearGradient id="pInk" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#3b5bd6"/><stop offset="1" stop-color="#7a4bd6"/>
+                                </linearGradient>
+                                <!-- Marks drawn on the plates' top faces, in plane coordinates (-90..90); each plate maps them onto the isometric face. -->
+                                <g id="m-review" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="8">
+                                    <path d="M-24-36L-56 0L-24 36M24-36L56 0L24 36"/><path d="M-15 3L-3 17L22-15" stroke-width="9"/>
+                                </g>
+                                <g id="m-orchestrate" fill="none" stroke-linecap="round" stroke-width="6">
+                                    <path d="M0 0L-50-32M0 0L50-32M0 0L0 48"/>
+                                    <circle r="17"/><circle cx="-50" cy="-32" r="10"/><circle cx="50" cy="-32" r="10"/><circle cy="48" r="10"/>
+                                </g>
+                                <g id="m-monitor" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7">
+                                    <path d="M42 24A48 48 0 1 1 42-24M33-37L42-24L53-33"/><path d="M-34 0H-14L-6-22L6 24L14-8L20 0H34" stroke-width="8"/>
+                                </g>
+                            </defs>
+
+                            <!-- bottom: Monitor Loop -->
+                            <g class="sp sp3" data-i="2"><g class="sp-in">
+                                <polygon points="-180,0 0,90 0,104 -180,14" fill="#7a4fd0"/>
+                                <polygon points="0,90 180,0 180,14 0,104" fill="#5a3fb0"/>
+                                <polygon points="-180,0 0,-90 180,0 0,90" fill="url(#pBrand)"/>
+                                <g transform="matrix(1 -.5 1 .5 0 0)">
+                                    <use href="#m-monitor" stroke="#3a2a8a" stroke-opacity=".3" transform="translate(1.5 2.5)"/>
+                                    <use href="#m-monitor" stroke="#fff" stroke-opacity=".95"/>
+                                </g>
+                            </g></g>
+                            <!-- middle: Review Orchestration -->
+                            <g class="sp sp2" data-i="1"><g class="sp-in">
+                                <polygon points="-180,0 0,90 0,104 -180,14" fill="#fff" fill-opacity=".14"/>
+                                <polygon points="0,90 180,0 180,14 0,104" fill="#fff" fill-opacity=".2"/>
+                                <polygon points="-180,0 0,-90 180,0 0,90" fill="url(#pGlass)" stroke="#fff" stroke-opacity=".45"/>
+                                <g transform="matrix(1 -.5 1 .5 0 0)">
+                                    <use href="#m-orchestrate" stroke="#fff" stroke-opacity=".55" transform="translate(1.5 2.5)"/>
+                                    <use href="#m-orchestrate" stroke="#9db4ff"/>
+                                </g>
+                            </g></g>
+                            <!-- top: Code Review -->
+                            <g class="sp sp1" data-i="0"><g class="sp-in">
+                                <polygon points="-180,0 0,90 0,104 -180,14" fill="#aeb2bd"/>
+                                <polygon points="0,90 180,0 180,14 0,104" fill="#9a9ea9"/>
+                                <polygon points="-180,0 0,-90 180,0 0,90" fill="url(#pTitanium)"/>
+                                <g transform="matrix(1 -.5 1 .5 0 0)">
+                                    <use href="#m-review" stroke="#fff" stroke-opacity=".7" transform="translate(1.5 2.5)"/>
+                                    <use href="#m-review" stroke="url(#pInk)"/>
+                                </g>
+                            </g></g>
+                        </svg>
+                        <ul class="callouts">
+                            <li class="callout" data-i="0"><button type="button">Code Review</button></li>
+                            <li class="callout" data-i="1"><button type="button">Review Orchestration</button></li>
+                            <li class="callout" data-i="2"><button type="button">Monitor Loop</button></li>
+                        </ul>
+                    </div>
                 </div>
-                <ul class="callouts">
-                    <li class="callout" data-i="0"><button type="button">Code Review</button></li>
-                    <li class="callout" data-i="1"><button type="button">Review Orchestration</button></li>
-                    <li class="callout" data-i="2"><button type="button">Monitor Loop</button></li>
-                </ul>
                 <div class="showcase-copy">
                     <header class="showcase-head">
                         <p class="eyebrow" data-reveal>Claude Code plugins</p>

@@ -1,12 +1,11 @@
-// Page behaviour: nav, content rendering, scroll reveal, pinned-section progress and the
-// lazy 3D stage. No bare module specifiers here on purpose: if import maps are unsupported
-// the page still works and the CSS stand-in for the 3D stack is shown.
+// Page behaviour: nav, content rendering, scroll reveal and the pinned plugins section.
 import { contributionData, certData, moreCertData } from './data.js';
 
 const root = document.documentElement;
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -208,6 +207,7 @@ const toolsSection = $('#tools');
 const awardsSection = $('#awards');
 const steps = $$('.step');
 const callouts = $$('.callout');
+const plateEls = $$('.sp');
 const stagePrev = $('#stage-prev');
 const stageNext = $('#stage-next');
 const calloutBox = $('.callouts');
@@ -244,7 +244,6 @@ function trackProgress(track, stageEl) {
     return span > 0 ? clamp(-track.getBoundingClientRect().top / span, 0, 1) : 0;
 }
 
-let stage3d = null;
 let ticking = false;
 let lastStep = -2;
 
@@ -268,15 +267,15 @@ function update() {
         lastStep = step;
         steps.forEach((el, i) => el.classList.toggle('is-active', i === step));
         callouts.forEach((el, i) => el.classList.toggle('is-active', i === step));
+        plateEls.forEach((el) => el.classList.toggle('is-active', Number(el.dataset.i) === step));
         showcaseStageEl.classList.toggle('has-step', step >= 0);
         targets = stageTargets(step);
         stagePrev.setAttribute('aria-label', 'Previous: ' + targets.prev.label);
         stageNext.setAttribute('aria-label', 'Next: ' + targets.next.label);
     }
     calloutBox.classList.toggle('on', showP > 0.16);
-    if (stage3d) {
-        stage3d.update({ showcase: showP, step, stacked: stackedMQ.matches });
-    }
+    // The plates come apart over the first third of the section. Outside the pinned mode they simply stay apart.
+    showcaseStageEl.style.setProperty('--e', scrolly ? smooth(0.04, 0.34, showP).toFixed(3) : '1');
 }
 function requestUpdate() {
     if (ticking) return;
@@ -288,64 +287,7 @@ addEventListener('resize', requestUpdate);
 onChange(stackedMQ, requestUpdate);
 onChange(reduceMotion, () => {
     root.classList.toggle('scrolly', !reduceMotion.matches);
-    if (reduceMotion.matches && stage3d) { stage3d.pause(); root.classList.remove('webgl'); }
-    else syncStage();
     requestUpdate();
-});
-
-/* --------------------------------------------------------------- 3D stage */
-const mounts = { showcase: $('[data-mount="showcase"]') };
-const visibility = new Map();
-let stageFailed = false;
-let contextLost = false; // a lost WebGL context may be restored: keep the stage object, show the CSS stack meanwhile
-let stageLoading = null;
-
-const saveData = navigator.connection && navigator.connection.saveData;
-const canTry3D = () => !reduceMotion.matches && !saveData && !stageFailed && !contextLost;
-
-function loadStage() {
-    if (stage3d || !canTry3D()) return Promise.resolve(stage3d);
-    if (!stageLoading) {
-        stageLoading = new Promise((resolve) => {
-            // Keep the first paint and the LCP text free of the 3D download.
-            const go = () => (window.requestIdleCallback ? requestIdleCallback(resolve, { timeout: 1200 }) : setTimeout(resolve, 150));
-            if (document.readyState === 'complete') go(); else addEventListener('load', go, { once: true });
-        })
-            .then(() => import('./stage.js'))
-            .then((m) => m.createStage({
-                onLost: () => { contextLost = true; root.classList.remove('webgl'); },
-                onRestored: () => { contextLost = false; syncStage(); },
-            }))
-            .then((s) => { stage3d = s; requestUpdate(); return s; })
-            .catch((err) => { stageFailed = true; root.classList.remove('webgl'); console.warn('3D stage unavailable, using the static stack.', err); return null; });
-    }
-    return stageLoading;
-}
-
-function syncStage() {
-    if (!canTry3D()) return;
-    let best = null;
-    visibility.forEach((ratio, name) => { if (ratio > 0 && (!best || ratio > best[1])) best = [name, ratio]; });
-    if (!best) { if (stage3d) stage3d.pause(); return; }
-    loadStage().then((s) => {
-        // Motion may have been reduced again while the stage was loading.
-        if (!s || !canTry3D()) return;
-        const [name] = best;
-        // Re-added on every show: a runtime switch of reduced motion off removes it and re-shows the stage.
-        root.classList.add('webgl');
-        s.show(name, mounts[name], name === 'showcase' ? callouts : []);
-    });
-}
-
-const mountObserver = new IntersectionObserver((entries) => {
-    entries.forEach((e) => visibility.set(e.target.dataset.mount, e.isIntersecting ? e.intersectionRatio : 0));
-    syncStage();
-}, { threshold: [0, 0.1, 0.3, 0.6, 1], rootMargin: '10% 0px' });
-Object.values(mounts).forEach((m) => mountObserver.observe(m));
-
-document.addEventListener('visibilitychange', () => {
-    if (!stage3d) return;
-    if (document.hidden) stage3d.pause(); else syncStage();
 });
 
 requestUpdate();
